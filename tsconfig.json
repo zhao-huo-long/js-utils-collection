@@ -1,0 +1,16 @@
+{
+  "buildOptions": {},
+  "compilerOptions": {
+    "allowJs": true,
+    "charset": "utf-8",
+    "target": "ES6",
+    "noUnusedLocals": false,
+    "noEmitOnError": true,
+    "allowUnreachableCode": false,
+    "module": "ES6",
+    "alwaysStrict": true,
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "declaration": true
+  }
+}
