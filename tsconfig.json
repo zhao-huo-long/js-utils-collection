@@ -11,7 +11,10 @@
     "alwaysStrict": true,
     "esModuleInterop": true,
     "outDir": "dist",
-    "declaration": true
+    "moduleResolution": "node",
+    "declaration": true,
+    "strict": true,
+    "strictNullChecks": true
   },
   "include": [
     "src/**/*.ts"
