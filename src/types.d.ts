@@ -17,3 +17,10 @@ type AddNullVal<T extends LiteralObject> = {
  * @description plain对象类型
  */
 type LiteralObject<T = unknown> = Record<string, T>;
+
+/**
+ * AnyFn
+ * @description 任意函数类型
+ */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+type AnyFn = (...args: any[]) => any;
