@@ -6,7 +6,7 @@ type EmptyObject = Record<string, never>;
 
 /**
  * AddNullVal
- * @deprecated 扩展类型 `value｜ null`
+ * @description 扩展类型 `value｜ null`
  */
 type AddNullVal<T extends LiteralObject> = {
   [i in keyof T]: T[i] | null;

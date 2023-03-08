@@ -39,15 +39,10 @@ export class StorageWithType<T extends LiteralObject = EmptyObject> {
         "window.localStorage or window.sessionStorage is undefined"
       );
     }
-    if (!type) {
-      this.storage = window.localStorage;
-    }
-    if (type === "localStorage") {
-      this.storage = window.localStorage;
-    }
     if (type === "sessionStorage") {
       this.storage = window.sessionStorage;
     }
+    this.storage = window.localStorage;
   }
   /**
    * @description 设置存储的 key, value
