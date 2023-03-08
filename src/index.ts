@@ -1,3 +1,3 @@
-export * from "./Storage";
+export * from "./lib/Storage";
 
-export * from "./EventBus";
+export * from "./lib/EventBus";

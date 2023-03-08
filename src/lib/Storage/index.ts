@@ -1,4 +1,4 @@
-import { isBrowser } from "../helper";
+import { isBrowser } from "../../helper";
 
 /**
  * @description StorageType 存储类型
@@ -7,7 +7,6 @@ export type StorageType = "localStorage" | "sessionStorage";
 
 /**
  * StorageWithType
- *
  * @example
  * ```typescript
  * interface KeyValType {
@@ -34,11 +33,14 @@ export class StorageWithType<T extends LiteralObject = EmptyObject> {
   /**
    * @param type {StorageType}
    */
-  constructor(type: StorageType) {
+  constructor(type?: StorageType) {
     if (!isBrowser || !window?.localStorage || !window?.sessionStorage) {
       throw new Error(
         "window.localStorage or window.sessionStorage is undefined"
       );
+    }
+    if (!type) {
+      this.storage = window.localStorage;
     }
     if (type === "localStorage") {
       this.storage = window.localStorage;
@@ -68,4 +70,10 @@ export class StorageWithType<T extends LiteralObject = EmptyObject> {
     }
     return null;
   }
+}
+
+export function newStorageWithType<T extends LiteralObject = EmptyObject>(
+  type?: StorageType
+) {
+  return new StorageWithType(type);
 }
