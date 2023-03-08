@@ -1,22 +1,22 @@
 /**
- * EmptyObject
+ * EmptyObj
  * @description 空对象类型
  */
-type EmptyObject = Record<string, never>;
+type EmptyObj = Record<string, never>;
 
 /**
  * AddNullVal
  * @description 扩展类型 `value｜ null`
  */
-type AddNullVal<T extends LiteralObject> = {
+type AddNullVal<T extends LiteralObj> = {
   [i in keyof T]: T[i] | null;
 };
 
 /**
- * LiteralObject
+ * LiteralObj
  * @description plain对象类型
  */
-type LiteralObject<T = unknown> = Record<string, T>;
+type LiteralObj<T = unknown> = Record<string, T>;
 
 /**
  * AnyFn

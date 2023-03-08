@@ -1,15 +1,15 @@
-export type TransformMap<T extends LiteralObject> = {
+export type TransformMap<T extends LiteralObj> = {
   [key in keyof T]?: (arg?: T[key]) => unknown;
 };
 
-export type TransformMapArr<T extends LiteralObject> = {
+export type TransformMapArr<T extends LiteralObj> = {
   [key in keyof T]?: ((arg?: T[key]) => unknown)[];
 };
 
 /**
  * 事件总线 - EventBus
  */
-export class EventBus<T extends LiteralObject = Record<string, any>> {
+export class EventBus<T extends LiteralObj = Record<string, any>> {
   protected handlerStore: TransformMapArr<T> = {};
   /*
     why WeakMap?
@@ -98,6 +98,6 @@ export class EventBus<T extends LiteralObject = Record<string, any>> {
   };
 }
 
-export function newEventBus<T extends LiteralObject = Record<string, any>>() {
+export function newEventBus<T extends LiteralObj = Record<string, any>>() {
   return new EventBus<T>();
 }
