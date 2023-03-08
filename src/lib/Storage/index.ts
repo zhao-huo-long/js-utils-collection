@@ -56,7 +56,7 @@ export class StorageWithType<T extends LiteralObj = Record<string, any>> {
   /**
    * @description 通过 key 获取存储的 value
    */
-  getItem<Key extends keyof T>(key: Key): AddNullVal<T>[Key] {
+  getItem<Key extends keyof T>(key: Key): T[Key] | null {
     if (typeof key === "string") {
       const val = this.storage.getItem(key);
       if (typeof val === "string") {
