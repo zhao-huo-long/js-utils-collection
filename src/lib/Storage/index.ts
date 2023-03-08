@@ -20,7 +20,7 @@ export type StorageType = "localStorage" | "sessionStorage";
  * // if you write storage.getItem('ids') typescript will throw type error
  * ```
  */
-export class StorageWithType<T extends LiteralObject = EmptyObject> {
+export class StorageWithType<T extends LiteralObject = Record<string, any>> {
   /**
    * storage
    * @default `window.localStorage`
@@ -67,8 +67,8 @@ export class StorageWithType<T extends LiteralObject = EmptyObject> {
   }
 }
 
-export function newStorageWithType<T extends LiteralObject = EmptyObject>(
-  type?: StorageType
-) {
+export function newStorageWithType<
+  T extends LiteralObject = Record<string, any>
+>(type?: StorageType) {
   return new StorageWithType<T>(type);
 }

@@ -9,7 +9,7 @@ export type TransformMapArr<T extends LiteralObject> = {
 /**
  * 事件总线 - EventBus
  */
-export class EventBus<T extends LiteralObject = EmptyObject> {
+export class EventBus<T extends LiteralObject = Record<string, any>> {
   protected handlerStore: TransformMapArr<T> = {};
   /*
     why WeakMap?
@@ -98,6 +98,6 @@ export class EventBus<T extends LiteralObject = EmptyObject> {
   };
 }
 
-export function newEventBus<T extends LiteralObject = EmptyObject>() {
+export function newEventBus<T extends LiteralObject = Record<string, any>>() {
   return new EventBus<T>();
 }
