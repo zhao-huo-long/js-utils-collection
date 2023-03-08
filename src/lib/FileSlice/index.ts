@@ -1,5 +1,6 @@
 import { FileToChunksCls } from "./FileToChunksCls";
-
+import { PromiseContainer } from "../PromiseContainer";
+import type { Opt } from "../PromiseContainer";
 export * from "./FileToChunksCls";
 
 export type ChunkHandlerParam = {
@@ -25,12 +26,42 @@ export class FileSliceCls {
     }
   };
 
-  chunkHandlerAsync(
-    handler: (param: ChunkHandlerParam) => [() => Promise<boolean>, AnyFn]
+  async chunkHandlerAsync(
+    handler: (param: ChunkHandlerParam) => [Promise<unknown>, AnyFn],
+    option?: Opt
   ) {
     const { innerFile } = this;
     if (innerFile) {
-      this.chunksCls?.chunks;
+      const handlerList = this.chunksCls?.chunks.map((chunk, index) => {
+        return () => {
+          const [promise, abort] = handler({
+            chunk,
+            size: chunk.size,
+            index,
+          });
+          return {
+            promise,
+            abort,
+          };
+        };
+      });
+      return new Promise((res, rej) => {
+        new PromiseContainer(handlerList, {
+          ...option,
+          onSuccess: () => {
+            option?.onSuccess?.();
+            res(true);
+          },
+          onError(error) {
+            option?.onError?.(error);
+            rej(error);
+          },
+          onAbort() {
+            option?.onAbort?.();
+            return rej("handler abort");
+          },
+        });
+      });
     }
   }
 }

@@ -91,7 +91,7 @@ export class EventBus<T extends LiteralObj = Record<string, any>> {
     }
   };
 
-  _inspectHandlerStore = <EventName extends keyof TransformMap<T>>(
+  __inspectHandlerStore__ = <EventName extends keyof TransformMap<T>>(
     name: EventName
   ) => {
     return this.handlerStore[name] || [];
