@@ -75,5 +75,5 @@ export class StorageWithType<T extends LiteralObject = EmptyObject> {
 export function newStorageWithType<T extends LiteralObject = EmptyObject>(
   type?: StorageType
 ) {
-  return new StorageWithType(type);
+  return new StorageWithType<T>(type);
 }
