@@ -9,5 +9,7 @@ newEventBus<{
 </script>
 
 <template>
-
+  <div>
+    utils-collection-playground
+  </div>
 </template>
