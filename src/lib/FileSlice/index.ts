@@ -27,21 +27,30 @@ export class FileSliceCls {
   };
 
   async chunkHandlerAsync(
-    handler: (param: ChunkHandlerParam) => [Promise<unknown>, AnyFn],
+    handler: (
+      param: ChunkHandlerParam
+    ) => Promise<unknown> | [Promise<unknown>, AnyFn],
     option?: Opt
   ) {
     const { innerFile } = this;
     if (innerFile) {
       const handlerList = this.chunksCls?.chunks.map((chunk, index) => {
         return () => {
-          const [promise, abort] = handler({
+          const res = handler({
             chunk,
             size: chunk.size,
             index,
           });
+          if (Array.isArray(res)) {
+            const [promise, abort] = res;
+            return {
+              promise,
+              abort,
+            };
+          }
           return {
-            promise,
-            abort,
+            promise: res,
+            abort: (_: unknown) => _,
           };
         };
       });
