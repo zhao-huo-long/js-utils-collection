@@ -8,7 +8,24 @@ export type TransformMapArr<T extends LiteralObj> = {
 
 /**
  * 事件总线 - EventBus
- * @description 事件总线类, 事件名和事件回调类型提示友好
+ * @description 事件总线类, 对事件名和事件回调参数类型提示比较友好
+ * @example
+ * ```ts
+ * import { newEventBus } from 'utils-collection'
+ *
+ * interface EventMap {
+ *  eventName: number
+ * }
+ *
+ * const eventBus = newEventBus<EventMap>()
+ *
+ * eventBus.on('eventName', (value) => {
+ * // typescript will known `s` is number or undefined
+ * })
+ *
+ * eventBus.fire('eventName', 2023)
+ * // if your code is '2023', ts will throw a type error
+ * ```
  */
 export class EventBus<T extends LiteralObj = Record<string, any>> {
   protected handlerStore: TransformMapArr<T> = {};

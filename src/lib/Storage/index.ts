@@ -7,17 +7,23 @@ export type StorageType = "localStorage" | "sessionStorage";
 
 /**
  * StorageWithType
+ * @description 存储类, 能对Key和Value类型提示比较友好
  * @example
  * ```typescript
+ * import { StorageWithType } from 'utils-collection'
+ *
  * interface KeyValType {
  *  id: number
  *  username: string
  * }
+ *
  * const storage = new StorageWithType<KeyValType>('sessionStorage')
+ *
  * storage.setItem('id', 2)
- * // if you write storage.setItem('id', '2') typescript will throw type error
+ * // if you write storage.setItem('id', '2'), typescript will throw type error
+ *
  * storage.getItem('id')
- * // if you write storage.getItem('ids') typescript will throw type error
+ * // if you write storage.getItem('ids'), typescript will throw type error
  * ```
  */
 export class StorageWithType<T extends LiteralObj = Record<string, any>> {

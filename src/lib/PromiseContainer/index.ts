@@ -81,7 +81,7 @@ export class PromiseContainer {
           promise success handler
           1. remove promise from doingList
           2. update progress
-          3. end-status dont exec next creator
+          3. end-status don't exec next creator
         */
         if (this.isFinish()) {
           return;
