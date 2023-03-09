@@ -8,6 +8,7 @@ export type TransformMapArr<T extends LiteralObj> = {
 
 /**
  * 事件总线 - EventBus
+ * @description 事件总线类, 事件名和事件回调类型提示友好
  */
 export class EventBus<T extends LiteralObj = Record<string, any>> {
   protected handlerStore: TransformMapArr<T> = {};
@@ -92,9 +93,12 @@ export class EventBus<T extends LiteralObj = Record<string, any>> {
   };
 
   __inspectHandlerStore__ = <EventName extends keyof TransformMap<T>>(
-    name: EventName
+    name?: EventName
   ) => {
-    return this.handlerStore[name] || [];
+    if (typeof name === "string") {
+      return this.handlerStore[name] || [];
+    }
+    return this.handlerStore;
   };
 }
 
