@@ -6,4 +6,9 @@ export * from "./lib/FileSlice";
 
 export * from "./lib/PromiseContainer";
 
-export { isBrowser, isNode, isNaturalInt, isPositiveInt } from "./helper";
+export {
+  isBrowser,
+  isNode,
+  isUnsignedInt,
+  isPositiveUnsignedInt,
+} from "./helper";

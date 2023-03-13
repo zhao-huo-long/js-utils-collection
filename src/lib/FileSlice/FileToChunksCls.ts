@@ -1,4 +1,4 @@
-import { isNaturalInt, isPositiveInt } from "../../helper";
+import { isPositiveUnsignedInt, isUnsignedInt } from "../../helper";
 
 export class FileToChunksCls {
   protected readonly innerFile: File | Blob | null = null;
@@ -11,7 +11,7 @@ export class FileToChunksCls {
     } else {
       throw new Error("param `file` must be a `File` or `Blob`");
     }
-    if (isPositiveInt(chunkSize)) {
+    if (isUnsignedInt(chunkSize)) {
       this._chunkSize = chunkSize;
     } else {
       throw new Error("param `chunkSize` must be a positive integer");
@@ -31,7 +31,7 @@ export class FileToChunksCls {
 
   getChunk = (index: number) => {
     const { innerFile, chunkSize } = this;
-    if (isNaturalInt(index)) {
+    if (isPositiveUnsignedInt(index)) {
       return innerFile?.slice(index * chunkSize, (index + 1) * chunkSize);
     }
     throw new Error("param `index` must be a natural number");
