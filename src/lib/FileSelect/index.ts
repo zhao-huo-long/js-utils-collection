@@ -1,25 +1,67 @@
 import { isBrowser } from "../../helper";
 
 /**
- * fileSelect - 文件选择
+ * fileSelect
  * @param accept
  * @param multiple
- * @returns
+ * @returns `Promise<File | File[]>`
+ * @description 文件选择
+ * @example
+ * ```
+ * import { fileSelect } from 'utils-collection'
+ * fileSelect('image/*')
+ * .then((file) => {
+ *   console.log(file)
+ * })
+ * // multiple
+ * fileSelect('image/*')
+ * .then((fileList) => {
+ *  console.log(fileList)
+ * })
+ * ```
  */
 
-export function fileSelect<T extends boolean>(accept = "*", multiple?: T) {
+export function fileSelect<T extends boolean>(
+  accept = "*",
+  option?: {
+    multiple?: T;
+    fileMaxSize?: number;
+    max?: number;
+  }
+) {
   if (isBrowser) {
+    const {
+      multiple = false,
+      fileMaxSize = Number.MAX_SAFE_INTEGER,
+      max = Number.MAX_SAFE_INTEGER,
+    } = option || {};
     const input = document.createElement("input");
     input.accept = accept;
     input.multiple = multiple || false;
     input.type = "file";
     type PromiseRes = T extends true ? File[] : File;
-    return new Promise<PromiseRes>((res) => {
+    return new Promise<PromiseRes>((res, rej) => {
       input.onchange = function () {
         if (multiple && input.files?.[Symbol.iterator]) {
-          res([...input.files] as PromiseRes);
+          const files = [...input.files];
+          res(files as PromiseRes);
+          if (files.length > max) {
+            rej(`[error]: only can select less than ${max} files`);
+            return;
+          }
+          for (const file of files) {
+            if (file.size > fileMaxSize) {
+              rej(`[${fileMaxSize}].size ${file.size} > ${fileMaxSize}`);
+              break;
+            }
+          }
         } else {
-          res(input.files?.[0] as PromiseRes);
+          const file = input.files?.[0];
+          if ((file?.size || 0) > fileMaxSize) {
+            rej(`[${fileMaxSize}].size ${file?.size} > ${fileMaxSize}`);
+          } else {
+            res(input.files?.[0] as PromiseRes);
+          }
         }
         input.remove();
       };
