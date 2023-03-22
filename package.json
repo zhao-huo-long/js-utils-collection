@@ -1,7 +1,7 @@
 {
-  "name": "utils-collection",
+  "name": "js-utils-collection",
   "version": "1.0.0",
-  "description": "utils-collection",
+  "description": "js-utils-collection",
   "main": "dist/src/index.js",
   "module": "esm/src/index.js",
   "types": "dist/index.d.ts",
@@ -15,7 +15,7 @@
     "lint": "npx eslint src/*",
     "lint-fix": "npx eslint  --fix src/*",
     "prettier": "npx prettier --write src/*",
-    "playground": "pnpm run build && cd playground/utils-collection-playground && pnpm i && pnpm link ../.. && pnpm run dev",
+    "playground": "pnpm run build && cd playground/js-utils-collection-playground && pnpm i && pnpm link ../.. && pnpm run dev",
     "prepare": "husky install"
   },
   "lint-staged": {
@@ -31,17 +31,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zhao-huo-long/utils-collection.git"
+    "url": "git+https://github.com/zhao-huo-long/js-utils-collection.git"
   },
   "keywords": [
-    "utils-collection"
+    "js-utils-collection"
   ],
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/zhao-huo-long/utils-collection/issues"
+    "url": "https://github.com/zhao-huo-long/js-utils-collection/issues"
   },
-  "homepage": "https://github.com/zhao-huo-long/utils-collection#readme",
+  "homepage": "https://github.com/zhao-huo-long/js-utils-collection#readme",
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.0.0",
     "@types/node": "^18.14.6",

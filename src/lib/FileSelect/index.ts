@@ -8,7 +8,7 @@ import { isBrowser } from "../../helper";
  * @description 文件选择
  * @example
  * ```
- * import { fileSelect } from 'utils-collection'
+ * import { fileSelect } from 'js-utils-collection'
  * fileSelect('image/*')
  * .then((file) => {
  *   console.log(file)

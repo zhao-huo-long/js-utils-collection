@@ -11,7 +11,7 @@ export type TransformMapArr<T extends LiteralObj> = {
  * @description 事件总线类, 对事件名和事件回调参数类型提示比较友好
  * @example
  * ```ts
- * import { newEventBus } from 'utils-collection'
+ * import { newEventBus } from 'js-utils-collection'
  *
  * interface EventMap {
  *  eventName: number
