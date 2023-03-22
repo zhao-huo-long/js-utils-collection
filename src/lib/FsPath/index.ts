@@ -9,9 +9,12 @@ export enum ReadResType {
 }
 
 /**
- * fsPathDetect
+ * fsPathDetect - 检测路径指向目标的类型
+ * 1. 404
+ * 2. file
+ * 3. dir
  * @param p
- * @returns
+ * @returns  "NOT_FOUND" | "FILE" | "DIR"
  */
 export function fsPathDetect(p: string): ReadResType {
   if (!isNode) throw new Error("function [fsPathDetect] must be run in node");
@@ -30,6 +33,11 @@ export function fsPathDetect(p: string): ReadResType {
   return targetType;
 }
 
+/**
+ * fsReadDir - 读取目录下的文件和目录
+ * @param p
+ * @returns
+ */
 export function fsReadDir(p: string) {
   if (!isNode) throw new Error("function [fsReadDir] must be run in node");
   if (fsPathDetect(p) !== ReadResType.DIR) {
