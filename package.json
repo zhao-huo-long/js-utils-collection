@@ -6,7 +6,7 @@
   "module": "esm/src/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"skip test\" ",
     "clean": "rimraf dist && rimraf esm",
     "build": "npm run clean && npm run build-common && npm run build-es && npm run copy",
     "copy": "cp src/types.d.ts dist && cp src/types.d.ts esm",
