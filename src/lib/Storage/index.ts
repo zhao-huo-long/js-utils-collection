@@ -10,7 +10,7 @@ export type StorageType = "localStorage" | "sessionStorage";
  * @description 存储类, 能对Key和Value类型提示比较友好
  * @example
  * ```typescript
- * import { StorageWithType } from 'utils-collection'
+ * import { StorageWithType } from 'js-utils-collection'
  *
  * interface KeyValType {
  *  id: number

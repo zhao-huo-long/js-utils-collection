@@ -1,19 +1,19 @@
-## utils-collection
+## js-utils-collection
 
-utils-collection, 常用功能集合包, typescript 编写代码提示友好。
+js-utils-collection, 常用功能集合包, typescript 编写代码提示友好。
 
 ### 安装方式
 
 ```shell
-npm install utils-collection
+npm install js-utils-collection
 ```
 
 ```shell
-yarn utils-collection
+yarn js-utils-collection
 ```
 
 ```shell
-pnpm install utils-collection
+pnpm install js-utils-collection
 ```
 
 ### 环境变量
@@ -21,7 +21,7 @@ pnpm install utils-collection
 - `isNode`
 
 ```js
-import { isNode } from "utils-collection";
+import { isNode } from "js-utils-collection";
 ```
 
 | value   | 类型      | 描述                         |
@@ -32,7 +32,7 @@ import { isNode } from "utils-collection";
 - `isBrowser`
 
 ```js
-import { isBrowser } from "utils-collection";
+import { isBrowser } from "js-utils-collection";
 ```
 
 | value   | 类型      | 描述                         |
@@ -42,11 +42,11 @@ import { isBrowser } from "utils-collection";
 
 ### 工具函数
 
-- `newEventBus`  
-事件总线, 监听事件、触发事件、取消事件。在 ts 中使用，能传入类型变量, 以此获得的事件名、回调参数类型提示。
+- `newEventBus`
+  事件总线, 监听事件、触发事件、取消事件。在 ts 中使用，能传入类型变量, 以此获得的事件名、回调参数类型提示。
 
 ```ts
-import { newEventBus } from "utils-collection";
+import { newEventBus } from "js-utils-collection";
 
 interface EventMap {
   eventName: number;
@@ -69,11 +69,11 @@ eventBus.fire("eventName", 2023);
 | `off`  | `(eventName: string, callback: function) => void ` | 取消监听事件                     |
 | `once` | `(eventName: string, callback: function) => void ` | 监听事件,触发一次后自动取消监听, |
 
-- `newStorageWithType`  
-扩展原 Web Storage 的` setItem``getItem `接口, 在 ts 中使用，能传入类型变量, 以此获得的 key,value 类型提示。
+- `newStorageWithType`
+  扩展原 Web Storage 的` setItem``getItem `接口, 在 ts 中使用，能传入类型变量, 以此获得的 key,value 类型提示。
 
 ```ts
-import { newStorageWithType } from "utils-collection";
+import { newStorageWithType } from "js-utils-collection";
 interface KeyValType {
   id: number;
   username: string;
