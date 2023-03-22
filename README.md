@@ -42,8 +42,8 @@ import { isBrowser } from "utils-collection";
 
 ### 工具函数
 
-- `newEventBus`
-  事件总线, 监听事件、触发事件、取消事件。在 ts 中使用，能传入类型变量, 以此获得的事件名、回调参数类型提示。
+- `newEventBus`  
+事件总线, 监听事件、触发事件、取消事件。在 ts 中使用，能传入类型变量, 以此获得的事件名、回调参数类型提示。
 
 ```ts
 import { newEventBus } from "utils-collection";
@@ -69,8 +69,8 @@ eventBus.fire("eventName", 2023);
 | `off`  | `(eventName: string, callback: function) => void ` | 取消监听事件                     |
 | `once` | `(eventName: string, callback: function) => void ` | 监听事件,触发一次后自动取消监听, |
 
-- `newStorageWithType`
-  扩展原 Web Storage 的` setItem``getItem `接口, 在 ts 中使用，能传入类型变量, 以此获得的 key,value 类型提示。
+- `newStorageWithType`  
+扩展原 Web Storage 的` setItem``getItem `接口, 在 ts 中使用，能传入类型变量, 以此获得的 key,value 类型提示。
 
 ```ts
 import { newStorageWithType } from "utils-collection";
