@@ -2,24 +2,31 @@
   "name": "utils-collection",
   "version": "1.0.0",
   "description": "utils-collection",
-  "main": "dist/index.js",
-  "module": "esm/index.js",
+  "main": "dist/src/index.js",
+  "module": "esm/src/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run build-common && npm run build-es",
-    "build-common": "cross-env module_type=cjs rollup --config ",
+    "test": "echo \"skip test\" ",
+    "clean": "rimraf dist && rimraf esm",
+    "build": "npm run clean && npm run build-common && npm run build-es && npm run copy",
+    "copy": "cp src/types.d.ts dist && cp src/types.d.ts esm",
+    "build-common": "cross-env module_type=cjs rollup --config",
     "build-es": "cross-env module_type=esm rollup --config",
     "lint": "npx eslint src/*",
     "lint-fix": "npx eslint  --fix src/*",
     "prettier": "npx prettier --write src/*",
+    "playground": "pnpm run build && cd playground/utils-collection-playground && pnpm i && pnpm link ../.. && pnpm run dev",
     "prepare": "husky install"
   },
   "lint-staged": {
     "*.ts": [
-      "eslint",
+      "eslint --fix",
       "prettier --write"
     ],
-    "*.js": "eslint --cache --fix",
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
     "*.{js,css,md}": "prettier --write"
   },
   "repository": {
@@ -37,8 +44,10 @@
   "homepage": "https://github.com/zhao-huo-long/utils-collection#readme",
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.0.0",
+    "@types/node": "^18.14.6",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.35.0",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.2",
@@ -46,9 +55,7 @@
     "rollup": "^3.18.0",
     "tslib": "^2.5.0",
     "typescript": "^4.9.5",
-    "cross-env": "^7.0.3"
+    "rimraf": "^4.3.1"
   },
-  "dependencies": {
-
-  }
+  "dependencies": {}
 }
