@@ -51,14 +51,14 @@ export function fileSelect<T extends boolean>(
           }
           for (const file of files) {
             if (file.size > fileMaxSize) {
-              rej(`[${fileMaxSize}].size ${file.size} > ${fileMaxSize}`);
+              rej(`[${file.name}] size ${file.size} > ${fileMaxSize}`);
               break;
             }
           }
         } else {
           const file = input.files?.[0];
           if ((file?.size || 0) > fileMaxSize) {
-            rej(`[${fileMaxSize}].size ${file?.size} > ${fileMaxSize}`);
+            rej(`[${file?.name}].size ${file?.size} > ${fileMaxSize}`);
           } else {
             res(input.files?.[0] as PromiseRes);
           }
@@ -67,6 +67,6 @@ export function fileSelect<T extends boolean>(
       };
     });
   } else {
-    throw new Error("fileSelect only can run in browser");
+    throw new Error("function `fileSelect` only can run in browser");
   }
 }
