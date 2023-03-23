@@ -2,11 +2,10 @@ import fs from "fs";
 import path from "path";
 import { isNode } from "../../helper";
 
-export enum ReadResType {
-  NOT_FOUND = "NOT_FOUND",
-  FILE = "FILE",
-  DIR = "DIR",
-}
+/**
+ * 探测结果类型
+ */
+export type DetectRes = "NOT_FOUND" | "FILE" | "DIR";
 
 /**
  * fsPathDetect - 检测路径指向目标的类型
@@ -16,18 +15,18 @@ export enum ReadResType {
  * @param p
  * @returns  "NOT_FOUND" | "FILE" | "DIR"
  */
-export function fsPathDetect(p: string): ReadResType {
+export function fsPathDetect(p: string): DetectRes {
   if (!isNode) throw new Error("function [fsPathDetect] must be run in node");
-  let targetType = ReadResType.NOT_FOUND;
+  let targetType: DetectRes = "NOT_FOUND";
   if (!fs.existsSync(p)) {
     return targetType;
   }
   const fd = fs.openSync(p, "r");
   const stat = fs.fstatSync(fd);
   if (stat.isFile()) {
-    targetType = ReadResType.FILE;
+    targetType = "FILE";
   } else if (stat.isDirectory()) {
-    targetType = ReadResType.DIR;
+    targetType = "DIR";
   }
   fs.closeSync(fd);
   return targetType;
@@ -40,21 +39,36 @@ export function fsPathDetect(p: string): ReadResType {
  */
 export function fsReadDir(p: string) {
   if (!isNode) throw new Error("function [fsReadDir] must be run in node");
-  if (fsPathDetect(p) !== ReadResType.DIR) {
+  if (fsPathDetect(p) !== "DIR") {
     return [];
   }
   return fs.readdirSync(p).map((i) => {
     const itemPath = path.join(p, i);
     const fd = fs.openSync(itemPath, "r");
     const stat = fs.fstatSync(fd);
-    return {
+    const info = {
       name: i,
       path: itemPath,
       isDir: stat.isDirectory(),
       isFile: stat.isFile(),
       size: stat.size,
-      modTime: stat.mtime,
-      cTime: stat.ctime,
+      mtime: stat.mtime,
+      ctime: stat.ctime,
     };
+    fs.closeSync(fd);
+    return info;
   });
+}
+
+export function fsDirSize(p: string): number {
+  if (!isNode) throw new Error("function [fsReadDir] must be run in node");
+  if (fsPathDetect(p) !== "DIR") {
+    return 0;
+  }
+  return fsReadDir(p).reduce((size, item) => {
+    if (item.isDir) {
+      return size + (fsDirSize(item.path) || 0);
+    }
+    return size + item.size;
+  }, 0);
 }

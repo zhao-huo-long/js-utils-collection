@@ -8,22 +8,21 @@
   "scripts": {
     "test": "echo \"skip test\" ",
     "clean": "rimraf dist && rimraf esm",
-    "build": "npm run clean && npm run build-common && npm run build-es && npm run copy",
-    "copy": "cp src/types.d.ts dist && cp src/types.d.ts esm",
+    "build": "sh ./scripts/build.sh",
     "build-common": "cross-env module_type=cjs rollup --config",
     "build-es": "cross-env module_type=esm rollup --config",
-    "lint": "npx eslint src/*",
-    "lint-fix": "npx eslint  --fix src/*",
-    "prettier": "npx prettier --write src/*",
-    "playground": "pnpm run build && cd playground/js-utils-collection-playground && pnpm i && pnpm link ../.. && pnpm run dev",
+    "lint": "pnpx eslint src/*",
+    "lint-fix": "pnpx eslint  --fix src/*",
+    "prettier": "pnpx prettier --write src/*",
+    "play": "sh ./scripts/playground.sh",
     "prepare": "husky install"
   },
   "lint-staged": {
-    "*.ts": [
+    "src/*.ts": [
       "eslint --fix",
       "prettier --write"
     ],
-    "*.js": [
+    "src/*.js": [
       "eslint --fix",
       "prettier --write"
     ],
@@ -52,10 +51,9 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.1.2",
     "prettier": "2.8.4",
+    "rimraf": "^4.3.1",
     "rollup": "^3.18.0",
     "tslib": "^2.5.0",
-    "typescript": "^4.9.5",
-    "rimraf": "^4.3.1"
-  },
-  "dependencies": {}
+    "typescript": "^4.9.5"
+  }
 }
