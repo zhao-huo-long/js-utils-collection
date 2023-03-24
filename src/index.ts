@@ -8,7 +8,7 @@ export * from "./lib/PromiseContainer";
 
 export * from "./lib/FileSelect";
 
-export * from "./lib/FsPath";
+export * from "./lib/FsExtra";
 
 export {
   isBrowser,
