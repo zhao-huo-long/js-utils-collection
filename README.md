@@ -83,6 +83,7 @@ eventBus.fire("eventName", 2023);
 
 ```ts
 import { StorageWithType } from "js-utils-collection";
+
 interface KeyValType {
   id: number;
   username: string;

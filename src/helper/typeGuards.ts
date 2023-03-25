@@ -7,6 +7,7 @@
 export const isPositiveUnsignedInt = (n: number): n is number =>
   n > 0 && n === parseInt(`${n}`);
 
+export const isUintNoZero = isPositiveUnsignedInt
 /**
  * isUnsignedInt
  * @description 判断是否为无符号整数
@@ -15,3 +16,5 @@ export const isPositiveUnsignedInt = (n: number): n is number =>
  */
 export const isUnsignedInt = (n: number): n is number =>
   n >= 0 && n === parseInt(`${n}`);
+
+export const isUint = isUnsignedInt
