@@ -7,12 +7,12 @@ import { isNode } from "../../helper";
  */
 export class Dir {
   public readonly isDir = true;
-  private __size: null | number = null;
-  private __dirPath = "";
+  protected __size: null | number = null;
+  protected __dirPath = "";
   /**
    * 存储文件的inode, 解决循环访问
    */
-  private readonly __viewSet: Set<number> = new Set();
+  protected readonly __viewSet: Set<number> = new Set();
   constructor(dir: string) {
     this.__dirPath = path.resolve(dir);
   }
@@ -31,6 +31,7 @@ export class Dir {
           const fd = fs.openSync(itemPath, "r");
           const info = fs.fstatSync(fd);
           if (this.__viewSet.has(info.ino)) {
+            fs.closeSync(fd);
             break;
           }
           this.__viewSet.add(info.ino);
@@ -71,17 +72,18 @@ export class Dir {
         return shadowInfo;
       });
     }
+    console.error(`[${this.dirPath}] not a dir`)
     return [];
   };
 }
 
 /**
  * createDir 创建Dir实例的工厂函数
- * @param p
+ * @param path
  * @returns
  */
-export function createDir(p = ".") {
-  return new Dir(p);
+export function createDir(path = ".") {
+  return new Dir(path);
 }
 
 /**
