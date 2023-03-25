@@ -1,6 +1,36 @@
 import fs from "fs";
-import path from "path";
+import path, { sep } from "path";
 import { isNode } from "../../helper";
+
+/**
+ * 创建目录, 支持多级
+ * @param p 
+ */
+export function mkDir(p: string) {
+  const absPath = path.resolve(p);
+  const dirs = absPath.split(sep);
+  switch (fsPathDetect(absPath)) {
+    case 'DIR':
+      break
+    case 'FILE':
+      throw new Error(`have some errors, [${absPath}] is a file`)
+    case 'NOT_FOUND':
+      dirs.reduce((curP, dir) => {
+        const target = curP + dir
+        const targetType = fsPathDetect(target)
+        if (targetType === 'FILE') {
+          throw new Error(`have some errors, [${target}] is a file`)
+        }
+        if (targetType === "NOT_FOUND") {
+          fs.mkdirSync(target)
+        }
+        return target
+      }, '/')
+      break;
+    default:
+      throw new Error(`have some errors`)
+  }
+}
 
 /**
  * Dir - 目录类
@@ -13,8 +43,11 @@ export class Dir {
    * 存储文件的inode, 解决循环访问
    */
   protected readonly __viewSet: Set<number> = new Set();
-  constructor(dir: string) {
+  constructor(dir: string, mkdirOn404?: boolean) {
     this.__dirPath = path.resolve(dir);
+    if (mkdirOn404) {
+      mkDir(this.__dirPath)
+    }
   }
   get dirPath() {
     return this.__dirPath;
@@ -82,7 +115,7 @@ export class Dir {
  * @param path
  * @returns
  */
-export function createDir(path = ".") {
+export function createDirClass(path = ".") {
   return new Dir(path);
 }
 
