@@ -1,6 +1,6 @@
 import { FileToChunksCls } from "./FileToChunksCls";
 import { PromiseContainer } from "../PromiseContainer";
-import type { Opt } from "../PromiseContainer";
+import type { Option } from "../PromiseContainer";
 export * from "./FileToChunksCls";
 
 export type ChunkHandlerParam = {
@@ -30,7 +30,7 @@ export class FileSliceCls {
     handler: (
       param: ChunkHandlerParam
     ) => Promise<unknown> | [Promise<unknown>, AnyFn],
-    option?: Opt
+    option?: Option
   ) {
     const { innerFile } = this;
     if (innerFile) {

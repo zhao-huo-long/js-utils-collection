@@ -7,7 +7,7 @@ export enum STATUS {
   done = "done",
 }
 
-export interface Opt {
+export interface Option {
   max?: number;
   onError?: (error?: Error) => void;
   onAbort?: () => void;
@@ -41,7 +41,7 @@ export class PromiseContainer {
 
   constructor(
     protected creatorList: PromiseCreator[] = [],
-    protected readonly opt: Opt = { max: 4 }
+    protected readonly opt: Option = { max: 4 }
   ) {
     this.total = this.creatorList?.length || 0;
   }

@@ -2,10 +2,7 @@ import { isBrowser } from "../../helper";
 
 /**
  * fileSelect
- * @param accept
- * @param multiple
- * @returns `Promise<File | File[]>`
- * @description 文件选择
+ * @description  文件选择函数,唤起文件选择对话框 
  * @example
  * ```
  * import { fileSelect } from 'js-utils-collection'
@@ -19,6 +16,9 @@ import { isBrowser } from "../../helper";
  *  console.log(fileList)
  * })
  * ```
+ * @param accept
+ * @param multiple
+ * @returns `Promise<File | File[]>`
  */
 
 export function fileSelect<T extends boolean>(
