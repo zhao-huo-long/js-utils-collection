@@ -9,7 +9,7 @@ export const isPositiveUnsignedInt = (n: number): n is number =>
 
 /**
  * isUnsignedInt
- * @description 判断是否为自然数(包含0)
+ * @description 判断是否为无符号整数
  * @param n {number}
  * @returns {boolean}
  */

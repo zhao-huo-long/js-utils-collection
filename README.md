@@ -16,9 +16,11 @@ yarn js-utils-collection
 pnpm install js-utils-collection
 ```
 
-### 环境变量
+---
 
-- `isNode`
+### 环境常量
+
+#### `isNode`
 
 ```js
 import { isNode } from "js-utils-collection";
@@ -29,7 +31,7 @@ import { isNode } from "js-utils-collection";
 | `true`  | `boolean` | 当前 js 运行在 node 环境     |
 | `false` | `boolean` | 当前 js 没有运行在 node 环境 |
 
-- `isBrowser`
+#### `isBrowser`
 
 ```js
 import { isBrowser } from "js-utils-collection";
@@ -40,19 +42,22 @@ import { isBrowser } from "js-utils-collection";
 | `true`  | `boolean` | 当前 js 运行在浏览器环境     |
 | `false` | `boolean` | 当前 js 没有运行在浏览器环境 |
 
-### 工具函数
+---
 
-- `newEventBus`
-  事件总线, 监听事件、触发事件、取消事件。在 ts 中使用，能传入类型变量, 以此获得的事件名、回调参数类型提示。
+### 工具类
+
+#### `EventBus`
+
+事件总线类, 能监听事件、触发事件、取消事件。在 ts 中使用，能传入类型变量, 以此获得的事件名、回调参数类型提示。
 
 ```ts
-import { newEventBus } from "js-utils-collection";
+import { EventBus } from "js-utils-collection";
 
 interface EventMap {
   eventName: number;
 }
 
-const eventBus = newEventBus<EventMap>();
+const eventBus = new EventBus<EventMap>();
 
 eventBus.on("eventName", (value) => {
   // typescript will known `s` is number or undefined
@@ -69,19 +74,26 @@ eventBus.fire("eventName", 2023);
 | `off`  | `(eventName: string, callback: function) => void ` | 取消监听事件                     |
 | `once` | `(eventName: string, callback: function) => void ` | 监听事件,触发一次后自动取消监听, |
 
-- `newStorageWithType`
-  扩展原 Web Storage 的` setItem``getItem `接口, 在 ts 中使用，能传入类型变量, 以此获得的 key,value 类型提示。
+> 工厂函数  
+> `import { newEventBus } from "js-utils-collection";`
+
+#### `StorageWithType`
+
+扩展原 Web Storage 的` setItem``getItem `接口, 在 ts 中使用，能传入类型变量, 以此获得的 key,value 类型提示。
 
 ```ts
-import { newStorageWithType } from "js-utils-collection";
+import { StorageWithType } from "js-utils-collection";
 interface KeyValType {
   id: number;
   username: string;
 }
 
-const storage = newStorageWithType<KeyValType>("sessionStorage");
+const storage = new StorageWithType<KeyValType>("sessionStorage");
 storage.setItem("id", 2);
 // if you write storage.setItem('id', '2'), typescript will throw type error
 storage.getItem("id");
 // if you write storage.getItem('ids'), typescript will throw type error
 ```
+
+> 工厂函数  
+> `import { newStorageWithType } from "js-utils-collection";`
