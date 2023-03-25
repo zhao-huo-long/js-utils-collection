@@ -1,14 +1,20 @@
-import fs, { read } from "fs";
+import fs from "fs";
 import path from "path";
 import { isNode } from "../../helper";
 
-
+/**
+ * Dir - 目录类
+ */
 export class Dir {
   public readonly isDir = true
   private __size: null | number = null;
   private __dirPath: string = '';
+  /**
+   * 存储文件的inode, 解决循环访问
+   */
+  private readonly __viewSet: Set<number> = new Set()
   constructor(dir: string){
-    this.__dirPath = dir
+    this.__dirPath = path.resolve(dir)
   }
   get dirPath(){
     return this.__dirPath
@@ -23,6 +29,10 @@ export class Dir {
           const itemPath = items.pop()!
           const fd = fs.openSync(itemPath, 'r')
           const info = fs.fstatSync(fd)
+          if(this.__viewSet.has(info.ino)){
+            break;
+          }
+          this.__viewSet.add(info.ino)
           const isDir = info.isDirectory()
           fs.closeSync(fd)
           size += info.size
@@ -42,11 +52,11 @@ export class Dir {
     if(fsPathDetect(this.dirPath) === 'DIR'){
       return fs.readdirSync(this.dirPath)
       .map(i => {
-        const absPath = path.join(this.__dirPath, i)
+        const absPath = path.join(this.dirPath, i)
         const fd = fs.openSync(absPath, 'r')
         const info = fs.fstatSync(fd)
         const isDir = info.isDirectory()
-        const shadowInfo = {... info, path: absPath,isDir, isFile: info.isFile() }
+        const shadowInfo = {... info, path: absPath, isDir, isFile: info.isFile() }
         fs.closeSync(fd)
         if(isDir){
           shadowInfo.size += new Dir(absPath).size
@@ -58,6 +68,15 @@ export class Dir {
   }
 }
 
+
+/**
+ * createDir 创建Dir实例的工厂函数
+ * @param p 
+ * @returns 
+ */
+export function createDir(p: string = '.'){
+  return new Dir(p)
+}
 
 /**
  * 探测结果类型

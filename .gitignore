@@ -109,4 +109,4 @@ dist
 # esm file
 esm/
 
-playground/**/*
+pnpm-lock.yaml
