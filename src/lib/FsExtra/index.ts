@@ -8,7 +8,7 @@ import { isNode } from "../../helper";
 export class Dir {
   public readonly isDir = true
   private __size: null | number = null;
-  private __dirPath: string = '';
+  private __dirPath = '';
   /**
    * 存储文件的inode, 解决循环访问
    */
@@ -74,7 +74,7 @@ export class Dir {
  * @param p 
  * @returns 
  */
-export function createDir(p: string = '.'){
+export function createDir(p = '.'){
   return new Dir(p)
 }
 
