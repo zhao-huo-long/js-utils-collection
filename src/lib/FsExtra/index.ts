@@ -6,8 +6,8 @@ import { isNode } from "../../helper";
  * 创建目录, 支持多级
  * @param p
  */
-export function mkDir(p: string) {
-  const absPath = path.resolve(p);
+export function mkDir(dirPath: string) {
+  const absPath = path.resolve(dirPath);
   const dirs = absPath.split(sep);
   switch (fsPathDetect(absPath)) {
     case "DIR":

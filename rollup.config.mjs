@@ -1,6 +1,6 @@
 import typescript from '@rollup/plugin-typescript';
 
-console.log(process.env.module_type)
+console.log('env: ', process.env.module_type)
 
 const output = {
   dir: './dist',
