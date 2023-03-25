@@ -4,31 +4,31 @@ import { isNode } from "../../helper";
 
 /**
  * 创建目录, 支持多级
- * @param p 
+ * @param p
  */
 export function mkDir(p: string) {
   const absPath = path.resolve(p);
   const dirs = absPath.split(sep);
   switch (fsPathDetect(absPath)) {
-    case 'DIR':
-      break
-    case 'FILE':
-      throw new Error(`have some errors, [${absPath}] is a file`)
-    case 'NOT_FOUND':
+    case "DIR":
+      break;
+    case "FILE":
+      throw new Error(`have some errors, [${absPath}] is a file`);
+    case "NOT_FOUND":
       dirs.reduce((curP, dir) => {
-        const target = curP + dir
-        const targetType = fsPathDetect(target)
-        if (targetType === 'FILE') {
-          throw new Error(`have some errors, [${target}] is a file`)
+        const target = curP + dir;
+        const targetType = fsPathDetect(target);
+        if (targetType === "FILE") {
+          throw new Error(`have some errors, [${target}] is a file`);
         }
         if (targetType === "NOT_FOUND") {
-          fs.mkdirSync(target)
+          fs.mkdirSync(target);
         }
-        return target
-      }, '/')
+        return target;
+      }, "/");
       break;
     default:
-      throw new Error(`have some errors`)
+      throw new Error(`have some errors`);
   }
 }
 
@@ -46,7 +46,7 @@ export class Dir {
   constructor(dir: string, mkdirOn404?: boolean) {
     this.__dirPath = path.resolve(dir);
     if (mkdirOn404) {
-      mkDir(this.__dirPath)
+      mkDir(this.__dirPath);
     }
   }
   get dirPath() {
@@ -105,7 +105,7 @@ export class Dir {
         return shadowInfo;
       });
     }
-    console.error(`[${this.dirPath}] not a dir`)
+    console.error(`[${this.dirPath}] not a dir`);
     return [];
   };
 }
