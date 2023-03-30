@@ -6,20 +6,24 @@ import { isNode } from "../../helper";
  * 创建目录, 支持多级
  * @param p
  */
-export function mkDir(dirPath: string) {
+export function mkByPath(dirPath: string, type: 'dir' | 'file', content?: string) {
   const absPath = path.resolve(dirPath);
   const dirs = absPath.split(sep);
   switch (fsPathDetect(absPath)) {
     case "DIR":
       break;
     case "FILE":
-      throw new Error(`have some errors, [${absPath}] is a file`);
+      throw new Error(`have some errors, file [${absPath}] already exist`);
     case "NOT_FOUND":
-      dirs.reduce((curP, dir) => {
+      dirs.reduce((curP, dir, index) => {
         const target = path.join(curP , dir);
         const targetType = fsPathDetect(target);
         if (targetType === "FILE") {
           throw new Error(`have some errors, [${target}] is a file`);
+        }
+        if(index === (dirs.length - 1) && type === 'file'){
+          fs.writeFileSync(target, content || '')
+          return target
         }
         if (targetType === "NOT_FOUND") {
           fs.mkdirSync(target);
@@ -32,6 +36,7 @@ export function mkDir(dirPath: string) {
   }
 }
 
+mkByPath('./play/newDir/newJSON.json', 'file', '{"hello: "world"}')
 /**
  * Dir - 目录类
  */
@@ -46,7 +51,7 @@ export class Dir {
   constructor(dir: string, mkdirOn404?: boolean) {
     this.__dirPath = path.resolve(dir);
     if (mkdirOn404) {
-      mkDir(this.__dirPath);
+      mkByPath(this.__dirPath, 'dir');
     }
   }
   get dirPath() {
