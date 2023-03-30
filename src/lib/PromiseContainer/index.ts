@@ -31,8 +31,10 @@ const endStatus = new Set([
   STATUS.error,
 ]);
 
-/*
- * PromiseContainer
+/**
+ * PromiseContainer - Promise容器
+ * @description
+ * 主要用于控制容器内promise并发量
  */
 export class PromiseContainer {
   protected doingList: ReturnType<PromiseCreator>[] = [];

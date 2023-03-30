@@ -48,7 +48,7 @@ bus.fire("count", 2023);
 | `off`  | `(eventName: string, callback: function) => void ` | 取消监听事件                    |
 | `once` | `(eventName: string, callback: function) => void ` | 监听事件,触发一次后自动取消监听 |
 
-> 工厂函数  
+> 工厂函数
 > `import { newEventBus } from "js-utils-collection";`
 
 #### `StorageWithType`
@@ -72,10 +72,31 @@ storage.getItem("id");
 // if you write storage.getItem('ids'), typescript will throw type error
 ```
 
-> 工厂函数  
+> 工厂函数
 > `import { newStorageWithType } from "js-utils-collection";`
 
 ---
+
+#### `mkByPath`
+
+创建目录或者文件, 如果父级目录不存在，将自动创建父级目录。
+
+```ts
+import { mkByPath } from "js-utils-collection";
+
+mkByPath("/a/b/c", "dir");
+// 如果目录a,b不存在, 将自动创建父级目录。
+
+mkByPath("/a/b/c.txt", "file", "这是txt的内容");
+// /a/b/c.txt
+// 这是txt的内容
+```
+
+| params    | 类型               | 描述                           |
+| --------- | ------------------ | ------------------------------ |
+| `path`    | `string`           | 要创建的目录或者文件           |
+| `type`    | `'file'  \| 'dir'` | 指定要创建的类型，默认为 `dir` |
+| `content` | `string`           | 文件内容, 类型为`file`生效     |
 
 ### 环境常量
 

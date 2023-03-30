@@ -3,11 +3,13 @@ import path, { sep } from "path";
 import { isNode } from "../../helper";
 
 /**
- * 创建目录, 支持多级
+ * mkByPath - 创建目录,文件
+ * @description
+ * 支持多级创建目录,文件。
  * @param p
  */
-export function mkByPath(dirPath: string, type: 'dir' | 'file', content?: string) {
-  const absPath = path.resolve(dirPath);
+export function mkByPath(p: string, type: 'dir' | 'file', content?: string) {
+  const absPath = path.resolve(p);
   const dirs = absPath.split(sep);
   switch (fsPathDetect(absPath)) {
     case "DIR":
@@ -36,7 +38,6 @@ export function mkByPath(dirPath: string, type: 'dir' | 'file', content?: string
   }
 }
 
-mkByPath('./play/newDir/newJSON.json', 'file', '{"hello: "world"}')
 /**
  * Dir - 目录类
  */
