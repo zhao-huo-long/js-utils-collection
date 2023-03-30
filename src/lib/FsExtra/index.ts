@@ -16,7 +16,7 @@ export function mkDir(dirPath: string) {
       throw new Error(`have some errors, [${absPath}] is a file`);
     case "NOT_FOUND":
       dirs.reduce((curP, dir) => {
-        const target = curP + dir;
+        const target = path.join(curP , dir);
         const targetType = fsPathDetect(target);
         if (targetType === "FILE") {
           throw new Error(`have some errors, [${target}] is a file`);
