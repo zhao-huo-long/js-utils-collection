@@ -98,6 +98,37 @@ mkByPath("/a/b/c.txt", "file", "这是txt的内容");
 | `type`    | `'file'  \| 'dir'` | 指定要创建的类型，默认为 `dir` |
 | `content` | `string`           | 文件内容, 类型为`file`生效     |
 
+#### `fsPathDetect`
+
+检测路径指向目标的类型
+
+```ts
+import { fsPathDetect } from "js-utils-collection";
+
+switch (fsPathDetect("/a/b/c")) {
+  case "NOT_FOUND":
+    console.log("NOT_FOUND");
+    break;
+  case "FILE":
+    console.log("FILE");
+    break;
+  case "DIR":
+    console.log("DIR");
+    break;
+  default:
+    console.log("sorry, i don't known");
+    break;
+}
+```
+
+| params | 类型     | 描述           |
+| ------ | -------- | -------------- |
+| `path` | `string` | 需要检测的路径 |
+
+| return | 类型                           | 描述           |
+| ------ | ------------------------------ | -------------- |
+| `type` | `NOT_FOUND` \| `FILE` \| `DIR` | 需要检测的路径 |
+
 ### 环境常量
 
 #### `isNode`
