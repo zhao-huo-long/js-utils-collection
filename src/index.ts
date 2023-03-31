@@ -15,4 +15,6 @@ export {
   isNode,
   isUnsignedInt,
   isPositiveUnsignedInt,
+  isUint,
+  isUintNoZero,
 } from "./helper";

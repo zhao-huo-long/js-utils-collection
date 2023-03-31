@@ -1,81 +1,128 @@
 import fs from "fs";
-import path from "path";
+import path, { sep } from "path";
 import { isNode } from "../../helper";
+
+/**
+ * mkByPath - 创建目录,文件
+ * @description
+ * 支持多级创建目录,文件。
+ * @param p
+ */
+export function mkByPath(p: string, type: 'dir' | 'file', content?: string) {
+  const absPath = path.resolve(p);
+  const dirs = absPath.split(sep);
+  switch (fsPathDetect(absPath)) {
+    case "DIR":
+      break;
+    case "FILE":
+      throw new Error(`have some errors, file [${absPath}] already exist`);
+    case "NOT_FOUND":
+      dirs.reduce((curP, dir, index) => {
+        const target = path.join(curP , dir);
+        const targetType = fsPathDetect(target);
+        if (targetType === "FILE") {
+          throw new Error(`have some errors, [${target}] is a file`);
+        }
+        if(index === (dirs.length - 1) && type === 'file'){
+          fs.writeFileSync(target, content || '')
+          return target
+        }
+        if (targetType === "NOT_FOUND") {
+          fs.mkdirSync(target);
+        }
+        return target;
+      }, "/");
+      break;
+    default:
+      throw new Error(`have some errors`);
+  }
+}
 
 /**
  * Dir - 目录类
  */
 export class Dir {
-  public readonly isDir = true
-  private __size: null | number = null;
-  private __dirPath: string = '';
+  public readonly isDir = true;
+  protected __size: null | number = null;
+  protected __dirPath = "";
   /**
    * 存储文件的inode, 解决循环访问
    */
-  private readonly __viewSet: Set<number> = new Set()
-  constructor(dir: string){
-    this.__dirPath = path.resolve(dir)
+  protected readonly __viewSet: Set<number> = new Set();
+  constructor(dir: string, mkdirOn404?: boolean) {
+    this.__dirPath = path.resolve(dir);
+    if (mkdirOn404) {
+      mkByPath(this.__dirPath, 'dir');
+    }
   }
-  get dirPath(){
-    return this.__dirPath
+  get dirPath() {
+    return this.__dirPath;
   }
-  get size(){
-    if(this.__size === null){
-      if(fsPathDetect(this.dirPath) === 'DIR'){
-        let size = 0
-        const items = fs.readdirSync(this.dirPath)
-        .map(i => path.join(this.__dirPath, i))
-        while(items.length){
-          const itemPath = items.pop()!
-          const fd = fs.openSync(itemPath, 'r')
-          const info = fs.fstatSync(fd)
-          if(this.__viewSet.has(info.ino)){
+  get size() {
+    if (this.__size === null) {
+      if (fsPathDetect(this.dirPath) === "DIR") {
+        let size = 0;
+        const items = fs
+          .readdirSync(this.dirPath)
+          .map((i) => path.join(this.__dirPath, i));
+        while (items.length) {
+          const itemPath = items.pop()!;
+          const fd = fs.openSync(itemPath, "r");
+          const info = fs.fstatSync(fd);
+          if (this.__viewSet.has(info.ino)) {
+            fs.closeSync(fd);
             break;
           }
-          this.__viewSet.add(info.ino)
-          const isDir = info.isDirectory()
-          fs.closeSync(fd)
-          size += info.size
-          if(isDir){
-            items.push(...(fs.readdirSync(itemPath)).map(i => path.join(itemPath, i)))
+          this.__viewSet.add(info.ino);
+          const isDir = info.isDirectory();
+          fs.closeSync(fd);
+          size += info.size;
+          if (isDir) {
+            items.push(
+              ...fs.readdirSync(itemPath).map((i) => path.join(itemPath, i))
+            );
           }
         }
-        this.__size = size
-        return size
+        this.__size = size;
+        return size;
       }
-      return 0
-    }else{
-      return this.__size
+      return 0;
+    } else {
+      return this.__size;
     }
   }
   ls = () => {
-    if(fsPathDetect(this.dirPath) === 'DIR'){
-      return fs.readdirSync(this.dirPath)
-      .map(i => {
-        const absPath = path.join(this.dirPath, i)
-        const fd = fs.openSync(absPath, 'r')
-        const info = fs.fstatSync(fd)
-        const isDir = info.isDirectory()
-        const shadowInfo = {... info, path: absPath, isDir, isFile: info.isFile() }
-        fs.closeSync(fd)
-        if(isDir){
-          shadowInfo.size += new Dir(absPath).size
+    if (fsPathDetect(this.dirPath) === "DIR") {
+      return fs.readdirSync(this.dirPath).map((i) => {
+        const absPath = path.join(this.dirPath, i);
+        const fd = fs.openSync(absPath, "r");
+        const info = fs.fstatSync(fd);
+        const isDir = info.isDirectory();
+        const shadowInfo = {
+          ...info,
+          path: absPath,
+          isDir,
+          isFile: info.isFile(),
+        };
+        fs.closeSync(fd);
+        if (isDir) {
+          shadowInfo.size += new Dir(absPath).size;
         }
-        return shadowInfo
-      })
+        return shadowInfo;
+      });
     }
-    return []
-  }
+    console.error(`[${this.dirPath}] not a dir`);
+    return [];
+  };
 }
-
 
 /**
  * createDir 创建Dir实例的工厂函数
- * @param p 
- * @returns 
+ * @param path
+ * @returns
  */
-export function createDir(p: string = '.'){
-  return new Dir(p)
+export function createDirClass(path = ".") {
+  return new Dir(path);
 }
 
 /**
