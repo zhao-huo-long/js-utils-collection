@@ -10,3 +10,4 @@ src
 change-log.md
 rollup.config.mjs
 tsconfig.json
+.github
