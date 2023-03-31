@@ -2,7 +2,6 @@
   "buildOptions": {},
   "compilerOptions": {
     "allowJs": true,
-    "charset": "utf-8",
     "target": "ES6",
     "noUnusedLocals": false,
     "noEmitOnError": true,
@@ -14,9 +13,11 @@
     "moduleResolution": "node",
     "declaration": true,
     "strict": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "baseUrl": ".",
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "src/types.d.ts"
   ],
 }

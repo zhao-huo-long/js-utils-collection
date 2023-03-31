@@ -19,8 +19,12 @@ if(process.env.module_type === 'esm'){
 
 export default {
   input: 'src/index.ts',
+  external: [
+    "tslib",
+  ],
   output: {
     preserveModules: true,
+    preserveModulesRoot: "src",
     ...output
   },
   plugins: [typescript(tsConfig)]
