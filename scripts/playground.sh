@@ -1,5 +1,5 @@
-pnpm unlink .
-pnpm run build
-pnpm link .
+npm unlink .
+npm run build
+npm link .
 cd play
-pnpm i
+npm i
