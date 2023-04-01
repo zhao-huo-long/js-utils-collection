@@ -1,9 +1,9 @@
 {
   "name": "js-utils-collection",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "js-utils-collection",
-  "main": "dist/src/index.js",
-  "module": "esm/src/index.js",
+  "main": "dist/index.js",
+  "module": "esm/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "echo \"skip test\" ",
@@ -11,9 +11,9 @@
     "build": "sh ./scripts/build.sh",
     "build-common": "cross-env module_type=cjs rollup --config",
     "build-es": "cross-env module_type=esm rollup --config",
-    "lint": "npx eslint src/*",
-    "lint-fix": "npx eslint  --fix src/*",
-    "prettier": "npx prettier --write src/*",
+    "lint": "eslint src/*",
+    "lint-fix": "eslint  --fix src/*",
+    "prettier": "prettier --write src/*",
     "play": "sh ./scripts/playground.sh",
     "prepare": "husky install"
   },
