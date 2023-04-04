@@ -58,7 +58,7 @@ export interface Route {
 
 export function parseMenuData(menu: MenuData[] = [], originRoutes: Route[] = []) {
   const menuTree = [...menu];
-  const routesRes = [];
+  const routesRes: Route[] = [];
   const map = treeToMap(originRoutes, 'path')
   while (menuTree.length) {
     const item = menuTree.pop()
