@@ -54,8 +54,15 @@ export interface Route {
   path?: string;
   children?: Route[];
   [i: string]: unknown;
+  redirect?: string;
 }
 
+/**
+ * parseMenuData
+ * @param menu
+ * @param originRoutes
+ * @returns
+ */
 export function parseMenuData(
   menu: MenuData[] = [],
   originRoutes: Route[] = []
@@ -64,8 +71,15 @@ export function parseMenuData(
   const routesRes: Route[] = [];
   const map = treeToMap(originRoutes, "path");
   while (menuTree.length) {
-    const item = menuTree.pop();
-    if (item?.path && /^\//.test(item.path) && map[item.path]) {
+    const item = menuTree.shift();
+    if (item?.children?.length) {
+      menuTree.unshift(...item.children)
+    }
+    if (typeof item?.path === 'string' && map[item.path].component) {
+      if (!/^\//.test(item.path)) {
+        console.warn(`[${item.path}], 请使用 / 开头的路径`)
+        continue
+      }
       routesRes.push({
         path: item.path,
         ...map[item.path],
@@ -75,9 +89,17 @@ export function parseMenuData(
           code: item.code,
         },
       });
-    } else {
-      throw new Error(`请使用 / 开头的路径`);
     }
   }
-  return routesRes;
+  return routesRes
+};
+
+export function handlerMenuData(menu: MenuData[] = [],) {
+  const arr = [...menu]
+  while (arr.length) {
+    const item = arr.shift();
+    if (item?.children?.length) {
+      arr.unshift(...item.children)
+    }
+  }
 }
