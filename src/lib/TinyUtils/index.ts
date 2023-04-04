@@ -4,7 +4,7 @@
  * @param delay - 延迟时间, 默认 1000ms
  * @returns
  */
-export function wait(delay: number = 1000) {
+export function wait(delay = 1000) {
   return new Promise((res) => {
     setTimeout(res, delay)
   })
@@ -16,7 +16,7 @@ export function wait(delay: number = 1000) {
  * @param delay
  * @returns
  */
-export async function reqFaker<T>(body: T, delay: number = 1000) {
+export async function reqFaker<T>(body: T, delay = 1000) {
   await wait(delay);
   return body;
 }
@@ -29,7 +29,7 @@ export async function reqFaker<T>(body: T, delay: number = 1000) {
  */
 export function interval(cb: (...args: unknown[]) => unknown, delay: number) {
   let timeId: NodeJS.Timeout;
-  let clear = () => clearTimeout(timeId)
+  const clear = () => clearTimeout(timeId)
   const fn = () => {
     timeId = setTimeout(() => {
       cb()

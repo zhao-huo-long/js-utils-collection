@@ -63,15 +63,16 @@ export function parseMenuData(menu: MenuData[] = [], originRoutes: Route[] = [])
   while (menuTree.length) {
     const item = menuTree.pop()
     if (
-      /^\//.test(item?.path || '')
-      && map[item?.path!]
+      item?.path
+      && /^\//.test(item.path)
+      && map[item.path]
       ) {
       routesRes.push({
-        ...map[item?.path!],
+        ...map[item.path],
         meta: {
-          keep: item?.keep,
-          title: item?.title,
-          code: item?.code
+          keep: item.keep,
+          title: item.title,
+          code: item.code
         }
       })
     } else {
