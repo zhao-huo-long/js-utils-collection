@@ -13,9 +13,11 @@
     "moduleResolution": "node",
     "declaration": true,
     "strict": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "baseUrl": ".",
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "src/types.d.ts"
   ],
 }
