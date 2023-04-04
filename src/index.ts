@@ -10,6 +10,10 @@ export * from "./lib/FileSelect";
 
 export * from "./lib/FsExtra";
 
+export * from "./lib/TinyUtils";
+
+export * from "./lib/ParseMenuData";
+
 export {
   isBrowser,
   isNode,

@@ -2,7 +2,7 @@ import { isBrowser } from "../../helper";
 
 /**
  * fileSelect
- * @description  文件选择函数,唤起文件选择对话框 
+ * @description  文件选择函数,唤起文件选择对话框
  * @example
  * ```
  * import { fileSelect } from 'js-utils-collection'
