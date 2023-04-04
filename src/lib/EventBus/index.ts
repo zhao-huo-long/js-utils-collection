@@ -85,8 +85,10 @@ export class EventBus<T extends LiteralObj = Record<string, any>> {
     arg?: T[EventName]
   ) => {
     const handlerList = this.handlerStore[name] || [];
-    if(!handlerList.length){
-      console.warn(`you fire event '${String(name)}', but it don't have any handler`)
+    if (!handlerList.length) {
+      console.warn(
+        `you fire event '${String(name)}', but it don't have any handler`
+      );
     }
     for (const handler of handlerList) {
       handler?.(arg);

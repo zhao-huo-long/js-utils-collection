@@ -8,7 +8,7 @@ import { isNode } from "../../helper";
  * 支持多级创建目录,文件。
  * @param p
  */
-export function mkByPath(p: string, type: 'dir' | 'file', content?: string) {
+export function mkByPath(p: string, type: "dir" | "file", content?: string) {
   const absPath = path.resolve(p);
   const dirs = absPath.split(sep);
   switch (fsPathDetect(absPath)) {
@@ -18,14 +18,14 @@ export function mkByPath(p: string, type: 'dir' | 'file', content?: string) {
       throw new Error(`have some errors, file [${absPath}] already exist`);
     case "NOT_FOUND":
       dirs.reduce((curP, dir, index) => {
-        const target = path.join(curP , dir);
+        const target = path.join(curP, dir);
         const targetType = fsPathDetect(target);
         if (targetType === "FILE") {
           throw new Error(`have some errors, [${target}] is a file`);
         }
-        if(index === (dirs.length - 1) && type === 'file'){
-          fs.writeFileSync(target, content || '')
-          return target
+        if (index === dirs.length - 1 && type === "file") {
+          fs.writeFileSync(target, content || "");
+          return target;
         }
         if (targetType === "NOT_FOUND") {
           fs.mkdirSync(target);
@@ -52,7 +52,7 @@ export class Dir {
   constructor(dir: string, mkdirOn404?: boolean) {
     this.__dirPath = path.resolve(dir);
     if (mkdirOn404) {
-      mkByPath(this.__dirPath, 'dir');
+      mkByPath(this.__dirPath, "dir");
     }
   }
   get dirPath() {

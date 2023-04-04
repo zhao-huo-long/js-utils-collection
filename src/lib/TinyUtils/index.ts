@@ -1,4 +1,3 @@
-
 /**
  * wait - 阻塞一段时间的promise
  * @param delay - 延迟时间, 默认 1000ms
@@ -6,8 +5,8 @@
  */
 export function wait(delay = 1000) {
   return new Promise((res) => {
-    setTimeout(res, delay)
-  })
+    setTimeout(res, delay);
+  });
 }
 
 /**
@@ -29,34 +28,37 @@ export async function reqFaker<T>(body: T, delay = 1000) {
  */
 export function interval(cb: (...args: unknown[]) => unknown, delay: number) {
   let timeId: NodeJS.Timeout;
-  const clear = () => clearTimeout(timeId)
+  const clear = () => clearTimeout(timeId);
   const fn = () => {
     timeId = setTimeout(() => {
-      cb()
-      fn()
-    }, delay)
-  }
-  fn()
-  return clear
+      cb();
+      fn();
+    }, delay);
+  };
+  fn();
+  return clear;
 }
 
 export type Tree = {
-  children?: Tree[],
+  children?: Tree[];
   [key: string]: unknown;
-}
+};
 
-export function treeToMap<M extends Tree,>(tree: M[], key: keyof Omit<M, 'children'>) {
-  const arr = [...tree]
-  const res: Record<string, Tree> = {}
+export function treeToMap<M extends Tree>(
+  tree: M[],
+  key: keyof Omit<M, "children">
+) {
+  const arr = [...tree];
+  const res: Record<string, Tree> = {};
   while (arr.length) {
-    const item = arr.shift()
+    const item = arr.shift();
     if (Array.isArray(item?.children)) {
-      arr.unshift(...(item!.children as M[]))
+      arr.unshift(...(item!.children as M[]));
     }
-    if(item?.[key]){
-      const m = item[key] as string
-      res[m] = { ...item, children: undefined }
+    if (item?.[key]) {
+      const m = item[key] as string;
+      res[m] = { ...item, children: undefined };
     }
   }
-  return res
+  return res;
 }
