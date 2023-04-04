@@ -51,8 +51,8 @@ export interface MenuData {
 }
 
 export interface Route {
-  path: string;
-  children: Route[];
+  path?: string;
+  children?: Route[];
   [i: string]: unknown,
 }
 
@@ -68,6 +68,7 @@ export function parseMenuData(menu: MenuData[] = [], originRoutes: Route[] = [])
       && map[item.path]
       ) {
       routesRes.push({
+        path: item.path,
         ...map[item.path],
         meta: {
           keep: item.keep,
