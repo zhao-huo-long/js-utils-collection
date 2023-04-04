@@ -1,6 +1,6 @@
 {
   "name": "js-utils-collection",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "js-utils-collection",
   "main": "dist/src/index.js",
   "module": "esm/src/index.js",
