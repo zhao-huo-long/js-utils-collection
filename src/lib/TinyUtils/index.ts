@@ -63,21 +63,25 @@ export function treeToMap<M extends Tree>(
   return res;
 }
 
-
 export interface TraverseFn {
-  (item?: Record<string, unknown>, parents?: Record<string, unknown>[]): void
+  (item?: Record<string, unknown>, parents?: Record<string, unknown>[]): void;
 }
 
-export function traverseTrees(trees: Record<string, unknown>[] = [], cb?: TraverseFn) {
-  const stack = [...trees]
-  const contextStack: Record<string, unknown>[][] = []
+export function traverseTrees(
+  trees: Record<string, unknown>[] = [],
+  cb?: TraverseFn
+) {
+  const stack = [...trees];
+  const contextStack: Record<string, unknown>[][] = [];
   while (stack.length) {
-    const item = stack.shift()
-    const context = contextStack.shift() || []
-    cb?.(item, context)
+    const item = stack.shift();
+    const context = contextStack.shift() || [];
+    cb?.(item, context);
     if (Array.isArray(item?.children)) {
-      stack.unshift(...(item?.children || []))
-      contextStack.unshift(...new Array(item?.children.length).fill([...context, item]))
+      stack.unshift(...(item?.children || []));
+      contextStack.unshift(
+        ...new Array(item?.children.length).fill([...context, item])
+      );
     }
   }
 }
