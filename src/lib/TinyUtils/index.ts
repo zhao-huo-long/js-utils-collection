@@ -99,22 +99,25 @@ export function treesMap(
   trees: Record<string, unknown>[] = [],
   cb?: TraverseFn
 ) {
-  const res: Record<string, unknown>[] = []
-  const contextMap = new Map()
+  const res: Record<string, unknown>[] = [];
+  const contextMap = new Map();
   traverseTrees(trees, (item, parents) => {
-    const i: Record<string, unknown> = { ...(cb?.({ ...item }, parents) || item), children: undefined }
-    contextMap.set(item, i)
+    const i: Record<string, unknown> = {
+      ...(cb?.({ ...item }, parents) || item),
+      children: undefined,
+    };
+    contextMap.set(item, i);
     if (parents?.length) {
       const context = parents.at(-1);
       if (contextMap.get(context)) {
-        contextMap.get(context).children = contextMap.get(context).children || [];
-        contextMap.get(context).children.push(i)
+        contextMap.get(context).children =
+          contextMap.get(context).children || [];
+        contextMap.get(context).children.push(i);
       }
     } else {
-      res.push(i)
+      res.push(i);
     }
-  })
-  contextMap.clear()
-  return res
+  });
+  contextMap.clear();
+  return res;
 }
-
