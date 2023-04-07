@@ -14,6 +14,8 @@ export * from "./lib/TinyUtils";
 
 export * from "./lib/ParseMenuData";
 
+export * from "./lib/TreeData";
+
 export {
   isBrowser,
   isNode,
