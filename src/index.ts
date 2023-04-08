@@ -6,7 +6,7 @@ export * from "./lib/FileSlice";
 
 export * from "./lib/PromiseContainer";
 
-export * from "./lib/FileSelect";
+export * from "./lib/select-file";
 
 export * from "./lib/FsExtra";
 

@@ -5,6 +5,8 @@
  * @modify date 2023-04-08 17:54:42
  */
 
+import { libWarn } from "../../helper";
+
 type TransformMap<T extends LiteralObj> = {
   [key in keyof T]?: (arg?: T[key]) => unknown;
 };
@@ -12,7 +14,6 @@ type TransformMap<T extends LiteralObj> = {
 type TransformMapArr<T extends LiteralObj> = {
   [key in keyof T]?: ((arg?: T[key]) => unknown)[];
 };
-
 
 /**
  * 事件总线 - EventBus
@@ -60,6 +61,7 @@ export class EventBus<T extends LiteralObj = Record<string, any>> {
       return;
     }
     this.handlerStore[name] = [handler];
+    return () => this.off(name, handler)
   };
 
   /**
@@ -76,11 +78,7 @@ export class EventBus<T extends LiteralObj = Record<string, any>> {
     }
     const handlerList = this.handlerStore[name] || [];
     const onceHandler = this.onceHandlerMap.get(handler);
-    if (onceHandler instanceof Function) {
-      this.handlerStore[name] = handlerList.filter((i) => i !== onceHandler);
-    } else {
-      this.handlerStore[name] = handlerList.filter((i) => i !== handler);
-    }
+    this.handlerStore[name] = handlerList.filter((i) => i !== (handler || onceHandler));
   };
 
   /**
@@ -94,12 +92,10 @@ export class EventBus<T extends LiteralObj = Record<string, any>> {
   ) => {
     const handlerList = this.handlerStore[name] || [];
     if (!handlerList.length) {
-      console.warn(
-        `you fire event '${String(name)}', but it don't have any handler`
-      );
+      console.warn(libWarn(`you fire event '${String(name)}', but it don't have any handler`));
     }
     for (const handler of handlerList) {
-      handler?.(arg);
+      handler(arg);
     }
   };
 
