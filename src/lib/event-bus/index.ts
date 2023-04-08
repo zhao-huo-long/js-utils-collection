@@ -1,23 +1,31 @@
-export type TransformMap<T extends LiteralObj> = {
+/**
+ * @author jerry.lee
+ * @email lijiuyi1995@outlook.com
+ * @create date 2023-04-08 17:54:42
+ * @modify date 2023-04-08 17:54:42
+ */
+
+type TransformMap<T extends LiteralObj> = {
   [key in keyof T]?: (arg?: T[key]) => unknown;
 };
 
-export type TransformMapArr<T extends LiteralObj> = {
+type TransformMapArr<T extends LiteralObj> = {
   [key in keyof T]?: ((arg?: T[key]) => unknown)[];
 };
+
 
 /**
  * 事件总线 - EventBus
  * @description 事件总线类, 对事件名和事件回调参数类型提示比较友好
  * @example
  * ```ts
- * import { newEventBus } from 'js-utils-collection'
+ * import { eventBusBuilder } from 'js-utils-collection'
  *
  * interface EventMap {
  *  eventName: number
  * }
  *
- * const eventBus = newEventBus<EventMap>()
+ * const eventBus = eventBusBuilder<EventMap>()
  *
  * eventBus.on('eventName', (value) => {
  * // typescript will known `s` is number or undefined
@@ -124,6 +132,8 @@ export class EventBus<T extends LiteralObj = Record<string, any>> {
   };
 }
 
-export function newEventBus<T extends LiteralObj = Record<string, any>>() {
+
+export function eventBusBuilder<T extends LiteralObj = Record<string, any>>() {
   return new EventBus<T>();
 }
+

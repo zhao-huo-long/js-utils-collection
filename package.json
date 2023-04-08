@@ -1,6 +1,6 @@
 {
   "name": "js-utils-collection",
-  "version": "1.0.8",
+  "version": "2.0.0",
   "description": "js-utils-collection",
   "main": "dist/index.js",
   "module": "esm/index.js",
@@ -8,13 +8,12 @@
   "scripts": {
     "test": "echo \"skip test\" ",
     "clean": "rimraf dist && rimraf esm",
-    "build": "sh ./scripts/build.sh",
+    "build": "./scripts/build.sh",
     "build-common": "cross-env module_type=cjs rollup --config",
     "build-es": "cross-env module_type=esm rollup --config",
     "lint": "eslint src/*",
     "lint-fix": "eslint  --fix src/*",
     "prettier": "prettier --write src/*",
-    "play": "sh ./scripts/playground.sh",
     "prepare": "husky install"
   },
   "lint-staged": {

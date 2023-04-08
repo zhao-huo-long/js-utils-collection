@@ -1,6 +1,6 @@
 export * from "./lib/Storage";
 
-export * from "./lib/EventBus";
+export * from "./lib/event-bus";
 
 export * from "./lib/FileSlice";
 

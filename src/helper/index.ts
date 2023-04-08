@@ -1,4 +1,10 @@
-export * from "./typeGuards";
+/**
+ * @author jerry.lee
+ * @email lijiuyi1995@outlook.com
+ * @create date 2023-04-08 17:54:42
+ * @modify date 2023-04-08 17:54:42
+ */
+import { PACKAGE_NAME } from '../constants'
 
 /**
  * isBrowser
@@ -13,5 +19,38 @@ export const isBrowser =
  */
 export const isNode =
   typeof process !== "undefined" &&
-  process.versions != null &&
-  process.versions.node != null;
+  !!process.versions &&
+  !!process.versions.node;
+
+/**
+ * isInt
+ * @description 判断是否为整数
+ * @param n {number}
+ * @returns boolean
+ */
+export const isInt = (n: number): n is number => typeof n === 'number' && n === parseInt(`${n}`);
+
+/**
+ * isPositiveUnsignedInt
+ * @description 判断是否为正整数
+ * @param n {number}
+ * @returns boolean
+ */
+export const isPositiveUnsignedInt = (n: number): n is number => isInt(n) && n > 0;
+
+
+export const isUintNoZero = isPositiveUnsignedInt;
+
+/**
+ * isUnsignedInt
+ * @description 判断是否为正整数且大于0
+ * @param n {number}
+ * @returns {boolean}
+ */
+export const isUnsignedInt = (n: number): n is number =>
+  n >= 0 && isInt(n);
+
+export const isUint = isUnsignedInt;
+
+
+export const libWarn = (text: string) =>  `[${PACKAGE_NAME} warning] ${text}`;
