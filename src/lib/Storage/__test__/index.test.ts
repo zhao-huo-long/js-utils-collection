@@ -11,6 +11,9 @@ test("test storage", () => {
   storage.setItem("email", "lijiuyi1995@outlook.com");
   expect(storage.getItem('name')).toEqual("jerry.lee");
   expect(storage.getItem('email')).toEqual("lijiuyi1995@outlook.com");
+})
+
+test("test storage session", () => {
   const session = storageBuilder('sessionStorage')
   expect(session.getItem('test')).toEqual(null);
   session.setItem("name", "jerry.lee");

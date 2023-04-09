@@ -1,6 +1,6 @@
 import { FileToChunksCls } from "./FileToChunksCls";
-import { PromiseContainer } from "../PromiseContainer";
-import type { Option } from "../PromiseContainer";
+import { PromiseContainer } from "../promise-container";
+import type { Option } from "../promise-container";
 export * from "./FileToChunksCls";
 
 export type ChunkHandlerParam = {
