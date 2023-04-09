@@ -1,4 +1,4 @@
-export * from "./lib/_storage";
+export * from "./lib/storage";
 
 export * from "./lib/event-bus";
 
