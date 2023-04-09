@@ -1,7 +1,7 @@
-import { FileToChunksCls } from "./FileToChunksCls";
+import { FileToChunksCls } from "./file-chunks";
 import { PromiseContainer } from "../promise-container";
 import type { Option } from "../promise-container";
-export * from "./FileToChunksCls";
+export * from "./file-chunks";
 
 export type ChunkHandlerParam = {
   chunk: Blob;
