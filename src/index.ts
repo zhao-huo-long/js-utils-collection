@@ -14,11 +14,4 @@ export * from "./lib/tiny-utils";
 
 export * from "./lib/tree-data";
 
-export {
-  isBrowser,
-  isNode,
-  isUnsignedInt,
-  isPositiveUnsignedInt,
-  isUint,
-  isUintNoZero,
-} from "./helper";
+export * from "./helper";
