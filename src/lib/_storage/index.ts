@@ -6,7 +6,7 @@ import { isBrowser } from "../../helper";
 export type StorageType = "localStorage" | "sessionStorage";
 
 /**
- * StorageWithType
+ * Storage
  * @description 存储类, 能对Key和Value类型提示比较友好
  * @example
  * ```typescript

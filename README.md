@@ -51,19 +51,19 @@ bus.fire("count", 2023);
 > 工厂函数
 > `import { newEventBus } from "js-utils-collection";`
 
-#### `StorageWithType`
+#### `Storage`
 
 扩展原 Web Storage 的` setItem``getItem `接口, 在 ts 中使用，能传入类型变量, 以此获得的 key,value 类型提示。
 
 ```ts
-import { StorageWithType } from "js-utils-collection";
+import { Storage } from "js-utils-collection";
 
 interface KeyValType {
   id: number;
   username: string;
 }
 
-const storage = new StorageWithType<KeyValType>("sessionStorage");
+const storage = new Storage<KeyValType>("sessionStorage");
 
 storage.setItem("id", 2);
 // if you write storage.setItem('id', '2'), typescript will throw type error
