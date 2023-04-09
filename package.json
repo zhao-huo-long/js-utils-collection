@@ -8,7 +8,7 @@
   "scripts": {
     "test": "jest",
     "clean": "rimraf dist && rimraf esm",
-    "build": "./scripts/build.sh",
+    "build": "npm run clean && npm run build-common && npm run build-es",
     "build-common": "cross-env module_type=cjs rollup --config",
     "build-es": "cross-env module_type=esm rollup --config",
     "lint": "eslint src/*",
