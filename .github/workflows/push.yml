@@ -10,8 +10,6 @@ on:
         # Push events on main branch
         - main
         - master
-        # Push events to branches matching refs/heads/releases/10
-        - 'releases/**'
         - '*'
 jobs:
   build:
