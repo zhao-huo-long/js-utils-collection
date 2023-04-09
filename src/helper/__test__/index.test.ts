@@ -1,4 +1,5 @@
-import { isBrowser, isNode, isInt, isUint, isPositiveUnsignedInt} from '../index'
+import { isBrowser, isNode, isInt, isUint, isPositiveUnsignedInt } from '..'
+
 
 test('test constant: isBrowser', () => {
   expect(isBrowser).toBe(false);
