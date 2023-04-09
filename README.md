@@ -73,7 +73,7 @@ storage.getItem("id");
 ```
 
 > 工厂函数
-> `import { newStorageWithType } from "js-utils-collection";`
+> `import { storageBuilder } from "js-utils-collection";`
 
 ---
 
