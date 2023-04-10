@@ -6,12 +6,13 @@
  */
 
 import { libWarn } from "../../helper";
+import type { AnyFn } from "../../types";
 
-type TransformMap<T extends LiteralObj> = {
+type TransformMap<T extends Record<string, unknown>> = {
   [key in keyof T]?: (arg?: T[key]) => unknown;
 };
 
-type TransformMapArr<T extends LiteralObj> = {
+type TransformMapArr<T extends Record<string, unknown>> = {
   [key in keyof T]?: ((arg?: T[key]) => unknown)[];
 };
 
@@ -36,7 +37,7 @@ type TransformMapArr<T extends LiteralObj> = {
  * // if your code is '2023', ts will throw a type error
  * ```
  */
-export class EventBus<T extends LiteralObj = Record<string, any>> {
+export class EventBus<T extends Record<string, unknown> = Record<string, unknown>> {
   protected handlerStore: TransformMapArr<T> = {};
   /*
     why WeakMap?
@@ -129,7 +130,7 @@ export class EventBus<T extends LiteralObj = Record<string, any>> {
 }
 
 
-export function eventBusBuilder<T extends LiteralObj = Record<string, any>>() {
+export function eventBusBuilder<T extends Record<string, unknown> = Record<string, any>>() {
   return new EventBus<T>();
 }
 
