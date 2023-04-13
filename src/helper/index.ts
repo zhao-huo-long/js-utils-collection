@@ -54,3 +54,5 @@ export const isUint = isUnsignedInt;
 
 
 export const libWarn = (text: string) =>  `[${PACKAGE_NAME} warning] ${text}`;
+
+export const libError = (text: string) => `[${PACKAGE_NAME} error] ${text}`;

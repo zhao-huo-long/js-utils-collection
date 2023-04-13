@@ -1,4 +1,4 @@
-import { isBrowser } from "../../helper";
+import { isBrowser, libError } from "../../helper";
 
 /**
  * selectFile
@@ -18,7 +18,7 @@ import { isBrowser } from "../../helper";
  * ```
  * @param accept
  * @param multiple
- * @returns `Promise<File | File[]>`
+ * @returns `Promise<File[]>`
  */
 export function selectFile(
   accept = "*",
@@ -29,7 +29,7 @@ export function selectFile(
   }
 ) {
   if (!isBrowser) {
-    throw new Error("function `selectFile` only can run in browser");
+    throw new Error(libError("function `selectFile` only can run in browser"));
   }
   const {
     multiple = false,
@@ -42,7 +42,7 @@ export function selectFile(
   input.type = "file";
   return new Promise((res, rej) => {
     input.onselect = function () {
-      if (multiple && input.files?.[Symbol.iterator]) {
+      if (input.files?.[Symbol.iterator]) {
         const files = [...input.files];
         if (files.length > max) {
           rej(`file more than ${max}`)
@@ -57,17 +57,7 @@ export function selectFile(
         res(files)
         return
       }
-      const file = input.files?.[0];
-      if (!file) {
-        rej(`${file} is not a file`)
-        return
-      }
-      if (file.size > fileMaxSize) {
-        rej(`${file.name} file size more than ${fileMaxSize}`)
-      } else {
-        res(input.files?.[0]);
-      }
-      return
+      return res([])
     }
     input.click();
   })

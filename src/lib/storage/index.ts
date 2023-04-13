@@ -1,4 +1,4 @@
-import { isBrowser } from "../../helper";
+import { isBrowser, libError } from "../../helper";
 
 /**
  * @description StorageType 存储类型
@@ -58,7 +58,7 @@ export class Storage<T = Record<string, unknown>> {
       this.storage.setItem(key, JSON.stringify(val));
       return
     }
-    throw new Error("key must be string");
+    libError("key must be string");
   }
   /**
    * @description 通过 key 获取存储的 value

@@ -15,7 +15,7 @@ export function wait(delay = 1000) {
  * @param delay
  * @returns
  */
-export async function reqFaker<T>(body: T, delay = 1000) {
+export async function fakeRequest<T>(body: T, delay = 1000) {
   await wait(delay);
   return body;
 }
