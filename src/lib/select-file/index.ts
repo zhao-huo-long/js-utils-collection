@@ -7,6 +7,12 @@ export interface FileCheckerRule {
   accept?: string
 }
 
+/**
+ * filesChecker - file检测
+ * @param files
+ * @param rule
+ * @returns
+ */
 export function filesChecker(
   files: File[] = [],
   rule: FileCheckerRule
@@ -16,6 +22,7 @@ export function filesChecker(
     maxSize = Number.MAX_SAFE_INTEGER,
     minSize = Number.MAX_SAFE_INTEGER,
   } = rule
+
   let error: [boolean, string] = [false, ``]
 
   if (files.length > len) {
