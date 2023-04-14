@@ -26,17 +26,20 @@ export async function fakeRequest<T>(body: T, delay = 1000) {
  * @param delay
  * @returns
  */
-export function interval(cb: (...args: unknown[]) => unknown, delay: number) {
+export function interval(cb: (...args: unknown[]) => unknown, delay: number, immediate?: boolean) {
   let timeId: NodeJS.Timeout;
-  const clear = () => clearTimeout(timeId);
+  let timeCount = 0;
   const fn = () => {
     timeId = setTimeout(() => {
-      cb();
+      cb?.(++timeCount);
       fn();
     }, delay);
   };
+  if (immediate) cb?.()
   fn();
-  return clear;
+  return () => {
+    clearTimeout(timeId);
+  };
 }
 
 export type Tree = {

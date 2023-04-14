@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button id="clc" onclick="clear">test</button>
+  <div id="out"></div>
+  <script>
+    function interval(cb, delay, immediate) {
+      let timeId;
+      let timeCount = 0;
+      const fn = () => {
+        timeId = setTimeout(() => {
+          cb?.(++timeCount);
+          fn();
+        }, delay);
+      };
+      if (immediate) cb?.()
+      fn();
+      return () => {
+        clearTimeout(timeId);
+      };
+    }
+    let i = 0
+    var clear = interval(() => {
+      out.innerHTML = i++
+    }, 500)
+
+    clc.onclick = clear
+  </script>
+</body>
+
+</html>
