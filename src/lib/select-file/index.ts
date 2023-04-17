@@ -1,10 +1,10 @@
 import { isBrowser, libError } from "../../helper";
 
 export interface FileCheckerRule {
-  len?: number
-  maxSize?: number
-  minSize?: number
-  accept?: string
+  len?: number;
+  maxSize?: number;
+  minSize?: number;
+  accept?: string;
 }
 
 /**
@@ -13,28 +13,28 @@ export interface FileCheckerRule {
  * @param rule
  * @returns
  */
-export function filesChecker(
-  files: File[] = [],
-  rule: FileCheckerRule
-) {
+export function filesChecker(files: File[] = [], rule: FileCheckerRule) {
   const {
     len = Number.MAX_SAFE_INTEGER,
     maxSize = Number.MAX_SAFE_INTEGER,
     minSize = Number.MAX_SAFE_INTEGER,
-  } = rule
+  } = rule;
 
-  let error: [boolean, string] = [false, ``]
+  let error: [boolean, string] = [false, ``];
 
   if (files.length > len) {
-    return [true, `file more than ${len}`]
+    return [true, `file more than ${len}`];
   }
   for (const file of files) {
     if (file.size > maxSize || file.size < minSize) {
-      error = [true, `${file.name} file size is more than ${maxSize} or less than ${minSize}`]
-      break
+      error = [
+        true,
+        `${file.name} file size is more than ${maxSize} or less than ${minSize}`,
+      ];
+      break;
     }
   }
-  return error
+  return error;
 }
 
 /**
@@ -74,16 +74,15 @@ export function selectFile(
         const files = [...input.files];
         const [error, errorMsg] = filesChecker(files, rule || {});
         if (error) {
-          rej(errorMsg)
+          rej(errorMsg);
         } else {
-          res(files)
+          res(files);
         }
-        return
+        return;
       }
-      res([])
-      return
-    }
+      res([]);
+      return;
+    };
     input.click();
-  })
-    .finally(() => input.remove());
+  }).finally(() => input.remove());
 }

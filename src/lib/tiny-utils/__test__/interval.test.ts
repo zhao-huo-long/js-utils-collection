@@ -1,4 +1,4 @@
-import {  interval } from '..'
+import { interval } from "..";
 
 test(`test fn interval`, async () => {
   // let i = 0;
@@ -16,4 +16,4 @@ test(`test fn interval`, async () => {
   // })
   // expect(res.callback.mock.calls).toHaveBeenCalledTimes(10);
   // expect(res.i).toHaveBeenCalledTimes(9);
-})
+});

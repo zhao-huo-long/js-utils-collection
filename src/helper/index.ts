@@ -4,7 +4,7 @@
  * @create date 2023-04-08 17:54:42
  * @modify date 2023-04-08 17:54:42
  */
-import { PACKAGE_NAME } from '../constants'
+import { PACKAGE_NAME } from "../constants";
 
 /**
  * isBrowser
@@ -28,7 +28,8 @@ export const isNode =
  * @param n {number}
  * @returns boolean
  */
-export const isInt = (n: number): n is number => typeof n === 'number' && n === parseInt(`${n}`);
+export const isInt = (n: number): n is number =>
+  typeof n === "number" && n === parseInt(`${n}`);
 
 /**
  * isPositiveUnsignedInt
@@ -36,8 +37,8 @@ export const isInt = (n: number): n is number => typeof n === 'number' && n === 
  * @param n {number}
  * @returns boolean
  */
-export const isPositiveUnsignedInt = (n: number): n is number => isInt(n) && n > 0;
-
+export const isPositiveUnsignedInt = (n: number): n is number =>
+  isInt(n) && n > 0;
 
 export const isUintNoZero = isPositiveUnsignedInt;
 
@@ -47,12 +48,10 @@ export const isUintNoZero = isPositiveUnsignedInt;
  * @param n {number}
  * @returns {boolean}
  */
-export const isUnsignedInt = (n: number): n is number =>
-  n >= 0 && isInt(n);
+export const isUnsignedInt = (n: number): n is number => n >= 0 && isInt(n);
 
 export const isUint = isUnsignedInt;
 
-
-export const libWarn = (text: string) =>  `[${PACKAGE_NAME} warning] ${text}`;
+export const libWarn = (text: string) => `[${PACKAGE_NAME} warning] ${text}`;
 
 export const libError = (text: string) => `[${PACKAGE_NAME} error] ${text}`;

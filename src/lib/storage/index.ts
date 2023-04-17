@@ -56,7 +56,7 @@ export class Storage<T = Record<string, unknown>> {
   setItem<Key extends keyof T>(key: Key, val: T[Key]) {
     if (typeof key === "string") {
       this.storage.setItem(key, JSON.stringify(val));
-      return
+      return;
     }
     libError("key must be string");
   }

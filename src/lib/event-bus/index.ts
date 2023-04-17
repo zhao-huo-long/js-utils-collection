@@ -37,7 +37,9 @@ type TransformMapArr<T extends Record<string, unknown>> = {
  * // if your code is '2023', ts will throw a type error
  * ```
  */
-export class EventBus<T extends Record<string, unknown> = Record<string, unknown>> {
+export class EventBus<
+  T extends Record<string, unknown> = Record<string, unknown>
+> {
   protected handlerStore: TransformMapArr<T> = {};
   /*
     why WeakMap?
@@ -62,7 +64,7 @@ export class EventBus<T extends Record<string, unknown> = Record<string, unknown
       return;
     }
     this.handlerStore[name] = [handler];
-    return () => this.off(name, handler)
+    return () => this.off(name, handler);
   };
 
   /**
@@ -79,7 +81,9 @@ export class EventBus<T extends Record<string, unknown> = Record<string, unknown
     }
     const handlerList = this.handlerStore[name] || [];
     const onceHandler = this.onceHandlerMap.get(handler);
-    this.handlerStore[name] = handlerList.filter((i) => i !== (handler || onceHandler));
+    this.handlerStore[name] = handlerList.filter(
+      (i) => i !== (handler || onceHandler)
+    );
   };
 
   /**
@@ -93,7 +97,11 @@ export class EventBus<T extends Record<string, unknown> = Record<string, unknown
   ) => {
     const handlerList = this.handlerStore[name] || [];
     if (!handlerList.length) {
-      console.warn(libWarn(`you fire event '${String(name)}', but it don't have any handler`));
+      console.warn(
+        libWarn(
+          `you fire event '${String(name)}', but it don't have any handler`
+        )
+      );
     }
     for (const handler of handlerList) {
       handler(arg);
@@ -129,8 +137,8 @@ export class EventBus<T extends Record<string, unknown> = Record<string, unknown
   };
 }
 
-
-export function eventBusBuilder<T extends Record<string, unknown> = Record<string, any>>() {
+export function eventBusBuilder<
+  T extends Record<string, unknown> = Record<string, any>
+>() {
   return new EventBus<T>();
 }
-

@@ -26,7 +26,11 @@ export async function fakeRequest<T>(body: T, delay = 1000) {
  * @param delay
  * @returns
  */
-export function interval(cb: (...args: unknown[]) => unknown, delay: number, immediate?: boolean) {
+export function interval(
+  cb: (...args: unknown[]) => unknown,
+  delay: number,
+  immediate?: boolean
+) {
   let timeId: NodeJS.Timeout;
   let timeCount = 0;
   const fn = () => {
@@ -35,7 +39,7 @@ export function interval(cb: (...args: unknown[]) => unknown, delay: number, imm
       fn();
     }, delay);
   };
-  if (immediate) cb?.()
+  if (immediate) cb?.();
   fn();
   return () => {
     clearTimeout(timeId);
