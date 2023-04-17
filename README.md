@@ -129,6 +129,49 @@ switch (fsPathDetect("/a/b/c")) {
 | ------ | ------------------------------ | -------------- |
 | `type` | `NOT_FOUND` \| `FILE` \| `DIR` | 需要检测的路径 |
 
+#### `wait`
+
+返回一个等待一段时间的 promise 实例
+
+```ts
+import { wait } from "js-utils-collection";
+
+wait(4000).then(() => {
+  // 4s后执行...
+});
+```
+
+| params  | 类型     | 描述              |
+| ------- | -------- | ----------------- |
+| `delay` | `number` | 等待时间, 默认 1s |
+
+#### `fakeRequest`
+
+模拟 ajax 异步返回值
+
+```ts
+import { fakeRequest } from "js-utils-collection";
+
+fakeRequest({ msg: "hello world." }, 4000).then((data) => {
+  // 4s后执行...
+  console.log(data);
+  // log: {msg: 'hello world.'}
+});
+```
+
+| params  | 类型     | 描述                          |
+| ------- | -------- | ----------------------------- |
+| `data`  | `any`    | 等待一段时间后被 resolve 的值 |
+| `delay` | `number` | 等待时间, 默认 1s             |
+
+#### `interval`
+
+用 `setTimeout` 模拟 `setInterval` 功能
+
+```ts
+import { interval } from "js-utils-collection";
+```
+
 ### 环境常量
 
 #### `isNode`
