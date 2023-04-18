@@ -158,9 +158,11 @@ export function fsPathDetect(p: string): DetectRes {
 
 export class FileReaderUtil {
   private fd: number | null = null;
+  private absPath: string | null = null;
   constructor(p: string) {
     if (fs.existsSync(p)) {
       this.fd = fs.openSync(p, "r");
+      this.absPath = path.resolve(p)
     } else {
       libWarn(`${p} not exists`);
     }
@@ -177,6 +179,13 @@ export class FileReaderUtil {
       return fs.fstatSync(this.fd);
     }
   };
+
+  public bufferAsync = async () => {
+    if (this.absPath) {
+      return fs.promises.readFile(this.absPath)
+    }
+    return Promise.reject(libError(`${this.absPath} not exists`))
+  }
 
   public buffer = () => {
     const info = this.stat();
@@ -195,13 +204,14 @@ export class FileReaderUtil {
 
 export const fileReader = (p: string) => new FileReaderUtil(p);
 
+
 /**
- * mergeFiles
+ * mergeBuffers
  * @param target
  * @param bufferList
  * @returns
  */
-export function mergeFiles(target: string, buffers: Buffer[]) {
+export function mergeBuffers(target: string, buffers: Buffer[]) {
   if (fs.existsSync(target)) {
     return Promise.reject(libError(`${path.resolve(target)} already exist`));
   }
@@ -220,4 +230,20 @@ export function mergeFiles(target: string, buffers: Buffer[]) {
       }
     );
   });
+}
+
+
+/**
+ * mergeFiles
+ * @param target
+ * @param files
+ */
+export async function mergeFiles(target: string, files: string[]) {
+  const buffers = await Promise
+  .all(files.map(file => fileReader(file).bufferAsync()))
+  .catch(e => console.warn(libError(e)))
+  if (Array.isArray(buffers)) {
+    return mergeBuffers(target, buffers);
+  }
+  return Promise.reject(buffers);
 }
