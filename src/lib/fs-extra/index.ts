@@ -1,6 +1,7 @@
-import fs from "fs";
-import path, { sep } from "path";
-import { isNode } from "../../helper";
+import fs from "node:fs";
+import { Buffer } from "node:buffer";
+import path, { sep } from "node:path";
+import { isNode, libError, libWarn } from "../../helper";
 
 /**
  * mkByPath - 创建目录,文件
@@ -111,7 +112,7 @@ export class Dir {
         return shadowInfo;
       });
     }
-    console.error(`[${this.dirPath}] not a dir`);
+    console.error(libError(`${this.dirPath} not a dir`))
     return [];
   };
 }
@@ -153,4 +154,70 @@ export function fsPathDetect(p: string): DetectRes {
   }
   fs.closeSync(fd);
   return targetType;
+}
+
+
+export class FileReaderUtil {
+  private fd: number | null = null
+  constructor(p: string) {
+    if (fs.existsSync(p)) {
+      this.fd = fs.openSync(p, 'r')
+    } else {
+      libWarn(`${p} not exists`)
+    }
+  }
+  public close = () => {
+    if (typeof this.fd === 'number') {
+      fs.close(this.fd)
+    }
+    this.fd = null
+  }
+
+  public stat = () => {
+    if (typeof this.fd === 'number') {
+      return fs.fstatSync(this.fd)
+    }
+  }
+
+  public buffer = () => {
+    const info = this.stat();
+    if (info && this.fd) {
+      const buffer = Buffer.alloc(info.size);
+      fs.readSync(this.fd, buffer);
+      return buffer
+    }
+  }
+
+  public content = (encoding: BufferEncoding = 'utf-8') => {
+    const buffer = this.buffer()
+    return buffer?.toString(encoding)
+  }
+}
+
+export const fileReader = (p: string) => new FileReaderUtil(p)
+
+
+/**
+ * mergeFiles
+ * @param target
+ * @param bufferList
+ * @returns
+ */
+export function mergeFiles(target: string, buffers: Buffer[]) {
+  if (fs.existsSync(target)) {
+    return Promise.reject(libError(`${path.resolve(target)} already exist`));
+  }
+  const totalLength = buffers.reduce((size, i) => size + i.length, 0)
+  return new Promise((res, rej) => {
+    fs.writeFile(
+      target,
+      Buffer.concat(buffers, totalLength), "binary", (err) => {
+        if (!err) {
+          res(null)
+          return
+        }
+        rej(err)
+      })
+  })
+
 }
