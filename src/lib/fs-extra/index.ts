@@ -112,7 +112,7 @@ export class Dir {
         return shadowInfo;
       });
     }
-    console.error(libError(`${this.dirPath} not a dir`))
+    console.error(libError(`${this.dirPath} not a dir`));
     return [];
   };
 }
@@ -156,46 +156,44 @@ export function fsPathDetect(p: string): DetectRes {
   return targetType;
 }
 
-
 export class FileReaderUtil {
-  private fd: number | null = null
+  private fd: number | null = null;
   constructor(p: string) {
     if (fs.existsSync(p)) {
-      this.fd = fs.openSync(p, 'r')
+      this.fd = fs.openSync(p, "r");
     } else {
-      libWarn(`${p} not exists`)
+      libWarn(`${p} not exists`);
     }
   }
   public close = () => {
-    if (typeof this.fd === 'number') {
-      fs.close(this.fd)
+    if (typeof this.fd === "number") {
+      fs.close(this.fd);
     }
-    this.fd = null
-  }
+    this.fd = null;
+  };
 
   public stat = () => {
-    if (typeof this.fd === 'number') {
-      return fs.fstatSync(this.fd)
+    if (typeof this.fd === "number") {
+      return fs.fstatSync(this.fd);
     }
-  }
+  };
 
   public buffer = () => {
     const info = this.stat();
     if (info && this.fd) {
       const buffer = Buffer.alloc(info.size);
       fs.readSync(this.fd, buffer);
-      return buffer
+      return buffer;
     }
-  }
+  };
 
-  public content = (encoding: BufferEncoding = 'utf-8') => {
-    const buffer = this.buffer()
-    return buffer?.toString(encoding)
-  }
+  public content = (encoding: BufferEncoding = "utf-8") => {
+    const buffer = this.buffer();
+    return buffer?.toString(encoding);
+  };
 }
 
-export const fileReader = (p: string) => new FileReaderUtil(p)
-
+export const fileReader = (p: string) => new FileReaderUtil(p);
 
 /**
  * mergeFiles
@@ -207,17 +205,19 @@ export function mergeFiles(target: string, buffers: Buffer[]) {
   if (fs.existsSync(target)) {
     return Promise.reject(libError(`${path.resolve(target)} already exist`));
   }
-  const totalLength = buffers.reduce((size, i) => size + i.length, 0)
+  const totalLength = buffers.reduce((size, i) => size + i.length, 0);
   return new Promise((res, rej) => {
     fs.writeFile(
       target,
-      Buffer.concat(buffers, totalLength), "binary", (err) => {
+      Buffer.concat(buffers, totalLength),
+      "binary",
+      (err) => {
         if (!err) {
-          res(null)
-          return
+          res(null);
+          return;
         }
-        rej(err)
-      })
-  })
-
+        rej(err);
+      }
+    );
+  });
 }
