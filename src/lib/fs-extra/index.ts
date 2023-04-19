@@ -1,7 +1,7 @@
-import fs from "node:fs";
-import { Buffer } from "node:buffer";
+import fs, { createReadStream, createWriteStream } from "node:fs";
 import path, { sep } from "node:path";
-import { isNode, libError, libWarn } from "../../helper";
+import { isNode, libError } from "../../helper";
+import { pipeline } from "node:stream/promises";
 
 /**
  * mkByPath - 创建目录,文件
@@ -12,17 +12,19 @@ import { isNode, libError, libWarn } from "../../helper";
 export function mkByPath(p: string, type: "dir" | "file", content?: string) {
   const absPath = path.resolve(p);
   const dirs = absPath.split(sep);
-  switch (fsPathDetect(absPath)) {
+  switch (pathTest(absPath)) {
     case "DIR":
       break;
     case "FILE":
-      throw new Error(`have some errors, file [${absPath}] already exist`);
+      throw new Error(
+        libError(`have some errors, file ${absPath} already exist`)
+      );
     case "NOT_FOUND":
       dirs.reduce((curP, dir, index) => {
         const target = path.join(curP, dir);
-        const targetType = fsPathDetect(target);
+        const targetType = pathTest(target);
         if (targetType === "FILE") {
-          throw new Error(`have some errors, [${target}] is a file`);
+          throw new Error(libError(`have some errors, ${target} is a file`));
         }
         if (index === dirs.length - 1 && type === "file") {
           fs.writeFileSync(target, content || "");
@@ -61,7 +63,7 @@ export class Dir {
   }
   get size() {
     if (this.__size === null) {
-      if (fsPathDetect(this.dirPath) === "DIR") {
+      if (pathTest(this.dirPath) === "DIR") {
         let size = 0;
         const items = fs
           .readdirSync(this.dirPath)
@@ -92,8 +94,8 @@ export class Dir {
       return this.__size;
     }
   }
-  ls = () => {
-    if (fsPathDetect(this.dirPath) === "DIR") {
+  list = () => {
+    if (pathTest(this.dirPath) === "DIR") {
       return fs.readdirSync(this.dirPath).map((i) => {
         const absPath = path.join(this.dirPath, i);
         const fd = fs.openSync(absPath, "r");
@@ -122,26 +124,27 @@ export class Dir {
  * @param path
  * @returns
  */
-export function createDirClass(path = ".") {
+export function dirBuilder(path = ".") {
   return new Dir(path);
 }
 
 /**
  * 探测结果类型
  */
-export type DetectRes = "NOT_FOUND" | "FILE" | "DIR";
+export type PathTestResult = "NOT_FOUND" | "FILE" | "DIR";
 
 /**
- * fsPathDetect - 检测路径指向目标的类型
+ * pathTest - 检测路径指向目标的类型
  * 1. 404
  * 2. file
  * 3. dir
  * @param p
  * @returns  "NOT_FOUND" | "FILE" | "DIR"
  */
-export function fsPathDetect(p: string): DetectRes {
-  if (!isNode) throw new Error("function [fsPathDetect] must be run in node");
-  let targetType: DetectRes = "NOT_FOUND";
+export function pathTest(p: string): PathTestResult {
+  if (!isNode)
+    throw new Error(libError("function pathTest must be run in node"));
+  let targetType: PathTestResult = "NOT_FOUND";
   if (!fs.existsSync(p)) {
     return targetType;
   }
@@ -156,92 +159,24 @@ export function fsPathDetect(p: string): DetectRes {
   return targetType;
 }
 
-export class FileReaderUtil {
-  private fd: number | null = null;
-  private absPath: string | null = null;
-  constructor(p: string) {
-    if (fs.existsSync(p)) {
-      this.fd = fs.openSync(p, "r");
-      this.absPath = path.resolve(p);
-    } else {
-      libWarn(`${p} not exists`);
-    }
-  }
-  public close = () => {
-    if (typeof this.fd === "number") {
-      fs.close(this.fd);
-    }
-    this.fd = null;
-  };
-
-  public stat = () => {
-    if (typeof this.fd === "number") {
-      return fs.fstatSync(this.fd);
-    }
-  };
-
-  public bufferAsync = async () => {
-    if (this.absPath) {
-      return fs.promises.readFile(this.absPath);
-    }
-    return Promise.reject(libError(`${this.absPath} not exists`));
-  };
-
-  public buffer = () => {
-    const info = this.stat();
-    if (info && this.fd) {
-      const buffer = Buffer.alloc(info.size);
-      fs.readSync(this.fd, buffer);
-      return buffer;
-    }
-  };
-
-  public content = (encoding: BufferEncoding = "utf-8") => {
-    const buffer = this.buffer();
-    return buffer?.toString(encoding);
-  };
-}
-
-export const fileReader = (p: string) => new FileReaderUtil(p);
-
-/**
- * mergeBuffers
- * @param target
- * @param bufferList
- * @returns
- */
-export function mergeBuffers(target: string, buffers: Buffer[]) {
-  if (fs.existsSync(target)) {
-    return Promise.reject(libError(`${path.resolve(target)} already exist`));
-  }
-  const totalLength = buffers.reduce((size, i) => size + i.length, 0);
-  return new Promise((res, rej) => {
-    fs.writeFile(
-      target,
-      Buffer.concat(buffers, totalLength),
-      "binary",
-      (err) => {
-        if (!err) {
-          res(null);
-          return;
-        }
-        rej(err);
-      }
-    );
-  });
-}
-
 /**
  * mergeFiles
  * @param target
  * @param files
  */
 export async function mergeFiles(target: string, files: string[]) {
-  const buffers = await Promise.all(
-    files.map((file) => fileReader(file).bufferAsync())
-  ).catch((e) => console.warn(libError(e)));
-  if (Array.isArray(buffers)) {
-    return mergeBuffers(target, buffers);
+  if (fs.existsSync(target)) {
+    return Promise.reject(libError(`${path.resolve(target)} already exist`));
   }
-  return Promise.reject(buffers);
+  for (const file of files) {
+    const error = await pipeline(
+      createReadStream(file),
+      createWriteStream(target, { flags: "a" })
+    ).catch((err) => err);
+    if (error instanceof Error) {
+      fs.rmSync(path.resolve(target));
+      return Promise.reject(error);
+    }
+    console.log(`append ${path.resolve(file)} => ${path.resolve(target)}`);
+  }
 }
