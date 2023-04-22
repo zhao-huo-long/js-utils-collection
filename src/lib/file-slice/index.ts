@@ -2,6 +2,7 @@ import { FileToChunksCls } from "./file-chunks";
 import { PromiseContainer } from "../promise-container";
 import type { Option } from "../promise-container";
 import type { AnyFn } from "../../types";
+
 export * from "./file-chunks";
 
 export type ChunkHandlerParam = {
@@ -56,7 +57,7 @@ export class FileSliceCls {
         };
       });
       return new Promise((res, rej) => {
-        new PromiseContainer(handlerList, {
+        const promise = new PromiseContainer(handlerList, {
           ...option,
           onSuccess: () => {
             option?.onSuccess?.();
@@ -71,6 +72,7 @@ export class FileSliceCls {
             return rej("handler abort");
           },
         });
+        promise.start()
       });
     }
   }

@@ -41,12 +41,13 @@
   },
   "homepage": "https://github.com/zhao-huo-long/js-utils-collection#readme",
   "dependencies": {
+    "@rollup/plugin-node-resolve": "^15.0.2",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.0.0",
     "@types/jest": "^29.5.0",
-    "@types/node": "^18.14.6",
+    "@types/node": "^18.15.12",
     "@typescript-eslint/eslint-plugin": "^5.54.0",
     "@typescript-eslint/parser": "^5.54.0",
     "cross-env": "^7.0.3",

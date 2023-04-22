@@ -15,6 +15,7 @@
     "strict": true,
     "strictNullChecks": true,
     "baseUrl": ".",
+    "sourceMap": true,
   },
   "include": [
     "src/**/*.ts",

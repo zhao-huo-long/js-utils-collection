@@ -1,4 +1,5 @@
 import typescript from '@rollup/plugin-typescript';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 console.log('env: ', process.env.module_type)
 
@@ -8,7 +9,8 @@ const output = {
 }
 
 const tsConfig = {
-  outDir: './dist'
+  outDir: './dist',
+  sourceMap: true,
 }
 
 if(process.env.module_type === 'esm'){
@@ -27,5 +29,5 @@ export default {
     preserveModulesRoot: "src",
     ...output
   },
-  plugins: [typescript(tsConfig)]
+  plugins: [nodeResolve(), typescript(tsConfig)]
 };

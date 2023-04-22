@@ -1,4 +1,4 @@
-import { isPositiveUnsignedInt, isUnsignedInt } from "../../helper";
+import { isUnsignedInt } from "../../helper";
 
 export class FileToChunksCls {
   protected readonly innerFile: File | Blob | null = null;
@@ -31,7 +31,7 @@ export class FileToChunksCls {
 
   getChunk = (index: number) => {
     const { innerFile, chunkSize } = this;
-    if (isPositiveUnsignedInt(index)) {
+    if (isUnsignedInt(index)) {
       return innerFile?.slice(index * chunkSize, (index + 1) * chunkSize);
     }
     throw new Error("param `index` must be a natural number");
