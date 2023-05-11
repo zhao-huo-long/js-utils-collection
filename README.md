@@ -18,7 +18,7 @@ pnpm install js-utils-collection
 
 ---
 
-### 工具类
+### 工具类 & 工具函数
 
 #### `EventBus`
 
@@ -103,7 +103,7 @@ import { fakeRequest } from "js-utils-collection";
 fakeRequest({ msg: "hello world." }, 4000).then((data) => {
   // 4s后执行...
   console.log(data);
-  // log: {msg: 'hello world.'}
+  // log: { msg: “hello world." }
 });
 ```
 
@@ -120,6 +120,30 @@ fakeRequest({ msg: "hello world." }, 4000).then((data) => {
 import { interval } from "js-utils-collection";
 ```
 
+#### `StringBox`
+用来实现文字输入效果
+```ts
+import { StringBox } from "js-utils-collection";
+
+new StringBox("abcd").pipelineChar((str, next) => {
+  console.log(str, next)
+})
+// 每200ms打印一次
+// a ture
+// ab ture
+// abc ture
+// abcd false
+```
+```ts
+interface TPipelineOption {
+  speed?: number;
+  signal?: AbortSignal;
+  mode?: "append" | "single";
+}
+declare class StringBox extends String {
+  pipelineChar: (cb: (str: string, next: boolean) => void, optionOuter?: TPipelineOption) => Promise<void>;
+}
+```
 ### 环境常量
 
 #### `isNode`
