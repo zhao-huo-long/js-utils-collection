@@ -1,3 +1,4 @@
+
 /**
  * wait - 阻塞一段时间的promise
  * @param delay - 延迟时间, 默认 1000ms
@@ -35,8 +36,8 @@ export function interval(
   let timeCount = 0;
   const fn = () => {
     timeId = setTimeout(() => {
-      cb?.(++timeCount);
       fn();
+      cb?.(++timeCount);
     }, delay);
   };
   if (immediate) cb?.();
@@ -127,4 +128,45 @@ export function treesMap(
   });
   contextMap.clear();
   return res;
+}
+
+
+export interface TPipelineOption {
+  speed?: number
+  signal?: AbortSignal
+  mode?: "append" | "single"
+}
+
+export class StringBox extends String {
+  public pipelineChar = (
+    cb: (str: string, next: boolean) => void,
+    optionOuter: TPipelineOption = {}
+  ) => {
+    const defaultOptions = { speed: 200, mode: 'append' }
+    const option = Object.assign({}, defaultOptions, optionOuter)
+    let index = 0
+    return new Promise<void>((res, rej) => {
+      const stop = interval(() => {
+        const next = index + 1 < this.length
+        if (option.mode === 'single') {
+          cb(this.at(index++) as string, next,)
+        }
+        if (option.mode === 'append') {
+          cb(this.slice(0, (index++) + 1), next)
+        }
+        if (!next) {
+          stop()
+          res()
+        }
+      }, option.speed)
+      option.signal?.addEventListener?.('abort', () => {
+        stop()
+        rej(new Error('you emit the abort event'))
+      })
+    })
+  }
+}
+
+export function toStringBox(v: unknown){
+  return new StringBox(v)
 }
