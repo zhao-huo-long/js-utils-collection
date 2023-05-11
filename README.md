@@ -128,6 +128,7 @@ import { StringBox } from "js-utils-collection";
 new StringBox("abcd").pipelineChar((str, next) => {
   console.log(str, next)
 })
+
 // 每200ms打印一次
 // a ture
 // ab ture
