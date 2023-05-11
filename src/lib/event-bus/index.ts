@@ -1,8 +1,18 @@
-export type TransformMap<T extends LiteralObj> = {
+/**
+ * @author jerry.lee
+ * @email lijiuyi1995@outlook.com
+ * @create date 2023-04-08 17:54:42
+ * @modify date 2023-04-08 17:54:42
+ */
+
+import { libWarn } from "../../helper";
+import type { AnyFn } from "../../types";
+
+type TransformMap<T extends Record<string, unknown>> = {
   [key in keyof T]?: (arg?: T[key]) => unknown;
 };
 
-export type TransformMapArr<T extends LiteralObj> = {
+type TransformMapArr<T extends Record<string, unknown>> = {
   [key in keyof T]?: ((arg?: T[key]) => unknown)[];
 };
 
@@ -11,13 +21,13 @@ export type TransformMapArr<T extends LiteralObj> = {
  * @description 事件总线类, 对事件名和事件回调参数类型提示比较友好
  * @example
  * ```ts
- * import { newEventBus } from 'js-utils-collection'
+ * import { eventBusBuilder } from 'js-utils-collection'
  *
  * interface EventMap {
  *  eventName: number
  * }
  *
- * const eventBus = newEventBus<EventMap>()
+ * const eventBus = eventBusBuilder<EventMap>()
  *
  * eventBus.on('eventName', (value) => {
  * // typescript will known `s` is number or undefined
@@ -27,7 +37,9 @@ export type TransformMapArr<T extends LiteralObj> = {
  * // if your code is '2023', ts will throw a type error
  * ```
  */
-export class EventBus<T extends LiteralObj = Record<string, any>> {
+export class EventBus<
+  T extends Record<string, unknown> = Record<string, unknown>
+> {
   protected handlerStore: TransformMapArr<T> = {};
   /*
     why WeakMap?
@@ -52,6 +64,7 @@ export class EventBus<T extends LiteralObj = Record<string, any>> {
       return;
     }
     this.handlerStore[name] = [handler];
+    return () => this.off(name, handler);
   };
 
   /**
@@ -68,11 +81,9 @@ export class EventBus<T extends LiteralObj = Record<string, any>> {
     }
     const handlerList = this.handlerStore[name] || [];
     const onceHandler = this.onceHandlerMap.get(handler);
-    if (onceHandler instanceof Function) {
-      this.handlerStore[name] = handlerList.filter((i) => i !== onceHandler);
-    } else {
-      this.handlerStore[name] = handlerList.filter((i) => i !== handler);
-    }
+    this.handlerStore[name] = handlerList.filter(
+      (i) => i !== (handler || onceHandler)
+    );
   };
 
   /**
@@ -87,11 +98,13 @@ export class EventBus<T extends LiteralObj = Record<string, any>> {
     const handlerList = this.handlerStore[name] || [];
     if (!handlerList.length) {
       console.warn(
-        `you fire event '${String(name)}', but it don't have any handler`
+        libWarn(
+          `you fire event '${String(name)}', but it don't have any handler`
+        )
       );
     }
     for (const handler of handlerList) {
-      handler?.(arg);
+      handler(arg);
     }
   };
 
@@ -124,6 +137,8 @@ export class EventBus<T extends LiteralObj = Record<string, any>> {
   };
 }
 
-export function newEventBus<T extends LiteralObj = Record<string, any>>() {
+export function eventBusBuilder<
+  T extends Record<string, unknown> = Record<string, any>
+>() {
   return new EventBus<T>();
 }

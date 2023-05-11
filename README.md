@@ -1,6 +1,6 @@
 ## js-utils-collection
 
-js 常用函数和类的集合包, 使用 typescript 编写, 在使用时代码提示友好.
+常用工具函数整理，使用 `typescript` 实现，类型提示友好
 
 ### 安装方式
 
@@ -18,7 +18,7 @@ pnpm install js-utils-collection
 
 ---
 
-### 工具类
+### 工具类 & 工具函数
 
 #### `EventBus`
 
@@ -51,19 +51,19 @@ bus.fire("count", 2023);
 > 工厂函数
 > `import { newEventBus } from "js-utils-collection";`
 
-#### `StorageWithType`
+#### `Storage`
 
 扩展原 Web Storage 的` setItem``getItem `接口, 在 ts 中使用，能传入类型变量, 以此获得的 key,value 类型提示。
 
 ```ts
-import { StorageWithType } from "js-utils-collection";
+import { Storage } from "js-utils-collection";
 
 interface KeyValType {
   id: number;
   username: string;
 }
 
-const storage = new StorageWithType<KeyValType>("sessionStorage");
+const storage = new Storage<KeyValType>("sessionStorage");
 
 storage.setItem("id", 2);
 // if you write storage.setItem('id', '2'), typescript will throw type error
@@ -73,62 +73,78 @@ storage.getItem("id");
 ```
 
 > 工厂函数
-> `import { newStorageWithType } from "js-utils-collection";`
+> `import { storageBuilder } from "js-utils-collection";`
 
 ---
 
-#### `mkByPath`
+#### `wait`
 
-创建目录或者文件, 如果父级目录不存在，将自动创建父级目录。
+返回一个等待一段时间的 promise 实例
 
 ```ts
-import { mkByPath } from "js-utils-collection";
+import { wait } from "js-utils-collection";
 
-mkByPath("/a/b/c", "dir");
-// 如果目录a,b不存在, 将自动创建父级目录。
-
-mkByPath("/a/b/c.txt", "file", "这是txt的内容");
-// /a/b/c.txt
-// 这是txt的内容
+wait(4000).then(() => {
+  // 4s后执行...
+});
 ```
 
-| params    | 类型               | 描述                           |
-| --------- | ------------------ | ------------------------------ |
-| `path`    | `string`           | 要创建的目录或者文件           |
-| `type`    | `'file'  \| 'dir'` | 指定要创建的类型，默认为 `dir` |
-| `content` | `string`           | 文件内容, 类型为`file`生效     |
+| params  | 类型     | 描述              |
+| ------- | -------- | ----------------- |
+| `delay` | `number` | 等待时间, 默认 1s |
 
-#### `fsPathDetect`
+#### `fakeRequest`
 
-检测路径指向目标的类型
+模拟 ajax 异步返回值
 
 ```ts
-import { fsPathDetect } from "js-utils-collection";
+import { fakeRequest } from "js-utils-collection";
 
-switch (fsPathDetect("/a/b/c")) {
-  case "NOT_FOUND":
-    console.log("NOT_FOUND");
-    break;
-  case "FILE":
-    console.log("FILE");
-    break;
-  case "DIR":
-    console.log("DIR");
-    break;
-  default:
-    console.log("sorry, i don't known");
-    break;
+fakeRequest({ msg: "hello world." }, 4000).then((data) => {
+  // 4s后执行...
+  console.log(data);
+  // log: { msg: “hello world." }
+});
+```
+
+| params  | 类型     | 描述                          |
+| ------- | -------- | ----------------------------- |
+| `data`  | `any`    | 等待一段时间后被 resolve 的值 |
+| `delay` | `number` | 等待时间, 默认 1s             |
+
+#### `interval`
+
+用 `setTimeout` 模拟 `setInterval` 功能
+
+```ts
+import { interval } from "js-utils-collection";
+```
+
+#### `StringBox`
+用来实现文字输入效果
+```ts
+import { StringBox } from "js-utils-collection";
+
+new StringBox("abcd").pipelineChar((str, next) => {
+  console.log(str, next)
+})
+
+// 每200ms打印一次
+// a ture
+// ab ture
+// abc ture
+// abcd false
+```
+```ts
+interface TPipelineOption {
+  speed?: number;
+  signal?: AbortSignal;
+  mode?: "append" | "single";
+}
+declare class StringBox extends String {
+  pipelineChar: (cb: (str: string, next: boolean) => void, optionOuter?: TPipelineOption) => Promise<void>;
 }
 ```
-
-| params | 类型     | 描述           |
-| ------ | -------- | -------------- |
-| `path` | `string` | 需要检测的路径 |
-
-| return | 类型                           | 描述           |
-| ------ | ------------------------------ | -------------- |
-| `type` | `NOT_FOUND` \| `FILE` \| `DIR` | 需要检测的路径 |
-
 ### 环境常量
 
 #### `isNode`
