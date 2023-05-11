@@ -23,4 +23,4 @@ jobs:
       - run: npm run lint
       - run: npm run test
       - run: npm run build
-      - run: echo ${{github.ref}}
+      - run: echo ${{github.ref_name}}
