@@ -33,6 +33,7 @@ jobs:
       - run: npm run prettier
       - run: npm run test
       - run: npm run build
+      - run: git add . && git commit -m "publish to npm"
       - run: npm version ${{github.ref_name}}
       - run: npm publish
         env:
