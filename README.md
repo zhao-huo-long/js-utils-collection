@@ -1,5 +1,8 @@
 ## js-utils-collection
 
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/js-utils-collection)
+![npm](https://img.shields.io/npm/dw/js-utils-collection)
+
 常用工具函数整理，使用 `typescript` 实现，类型提示友好
 
 ### 安装方式
@@ -121,13 +124,15 @@ import { interval } from "js-utils-collection";
 ```
 
 #### `StringBox`
+
 用来实现文字输入效果
+
 ```ts
 import { StringBox } from "js-utils-collection";
 
 new StringBox("abcd").pipelineChar((str, next) => {
-  console.log(str, next)
-})
+  console.log(str, next);
+});
 
 // 每200ms打印一次
 // a ture
@@ -135,6 +140,7 @@ new StringBox("abcd").pipelineChar((str, next) => {
 // abc ture
 // abcd false
 ```
+
 ```ts
 interface TPipelineOption {
   speed?: number;
@@ -142,9 +148,13 @@ interface TPipelineOption {
   mode?: "append" | "single";
 }
 declare class StringBox extends String {
-  pipelineChar: (cb: (str: string, next: boolean) => void, optionOuter?: TPipelineOption) => Promise<void>;
+  pipelineChar: (
+    cb: (str: string, next: boolean) => void,
+    optionOuter?: TPipelineOption
+  ) => Promise<void>;
 }
 ```
+
 ### 环境常量
 
 #### `isNode`

@@ -1,32 +1,35 @@
-import { fakeRequest, interval, wait } from "..";
+import { fakeRequest, wait, toStringBox } from "..";
 
-// mock timer
-jest.useFakeTimers();
 jest.spyOn(global, "setTimeout");
 
-test("test fn wait", () => {
-  wait(2000);
+afterEach(() => {
+  jest.resetAllMocks();
+});
+
+test("test fn wait", async () => {
+  await wait(2000);
   expect(setTimeout).toHaveBeenCalledTimes(1);
   expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 2000);
 
-  wait();
+  await wait();
   expect(setTimeout).toHaveBeenCalledTimes(2);
   expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 1000);
 });
 
-test(`test fn fakeRequest`, () => {
-  fakeRequest(
+test(`test fn fakeRequest`, async () => {
+  return fakeRequest(
     {
       msg: "hello world",
     },
     3000
   ).then((i) => {
     expect(i).toEqual({ msg: "hello world" });
+    expect(setTimeout).toHaveBeenCalledTimes(1);
   });
-
-  expect(setTimeout).toHaveBeenCalledTimes(3);
 });
 
-test(`test fn interval`, async () => {
-  let i = 0;
-});
+test(`test fn toStringBox`, async () => {
+  const fn = jest.fn(() => { })
+  await toStringBox(`hello world`).pipelineChar(fn, { speed: 1, })
+  expect(fn).toHaveBeenCalledTimes(11)
+}, 500);
