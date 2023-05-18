@@ -2,6 +2,7 @@
 
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/js-utils-collection)
 ![npm](https://img.shields.io/npm/dw/js-utils-collection)
+![NPM](https://img.shields.io/npm/l/js-utils-collection)
 
 常用工具函数整理，使用 `typescript` 实现，类型提示友好
 
