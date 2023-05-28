@@ -42,6 +42,7 @@
   "homepage": "https://github.com/zhao-huo-long/js-utils-collection#readme",
   "dependencies": {
     "@rollup/plugin-node-resolve": "^15.0.2",
+    "tinymce": "^6.4.2",
     "tslib": "^2.5.0"
   },
   "devDependencies": {

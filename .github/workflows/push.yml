@@ -8,8 +8,6 @@ on:
       # Sequence of patterns matched against refs/heads
       branches:
         # Push events on main branch
-        - main
-        - master
         - '*'
 jobs:
   build:
@@ -24,4 +22,3 @@ jobs:
       - run: npm run prettier
       - run: npm run test
       - run: npm run build
-      - run: echo ${{github.ref_name}}
