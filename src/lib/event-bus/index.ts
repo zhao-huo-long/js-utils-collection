@@ -1,12 +1,5 @@
-/**
- * @author jerry.lee
- * @email lijiuyi1995@outlook.com
- * @create date 2023-04-08 17:54:42
- * @modify date 2023-04-08 17:54:42
- */
-
-import { libWarn } from "../../helper";
-import type { AnyFn } from "../../types";
+import { libWarn } from "@/helper";
+import type { AnyFn } from "@/types";
 
 type TransformMap<T extends Record<string, unknown>> = {
   [key in keyof T]?: (arg?: T[key]) => unknown;

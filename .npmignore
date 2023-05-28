@@ -11,3 +11,8 @@ change-log.md
 rollup.config.mjs
 tsconfig.json
 .github
+jest.config.js
+coverage
+.eslintignore
+package-lock.json
+scripts

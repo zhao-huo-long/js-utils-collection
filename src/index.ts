@@ -13,3 +13,5 @@ export * from "./lib/tiny-utils";
 export * from "./lib/tree-data";
 
 export * from "./helper";
+
+export * from "./lib/rich-editor";

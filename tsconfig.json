@@ -1,5 +1,4 @@
 {
-  "buildOptions": {},
   "compilerOptions": {
     "allowJs": true,
     "target": "ES6",
@@ -14,10 +13,16 @@
     "declaration": true,
     "strict": true,
     "strictNullChecks": true,
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "sourceMap": true,
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    }
   },
   "include": [
     "src/**/*.ts",
   ],
+  "compileOnSave": true,
 }

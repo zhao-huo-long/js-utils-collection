@@ -1,4 +1,4 @@
-import { isBrowser, libError } from "../../helper";
+import { isBrowser, libError } from "@/helper";
 
 /**
  * @description StorageType 存储类型

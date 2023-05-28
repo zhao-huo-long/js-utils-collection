@@ -1,4 +1,4 @@
-import { isBrowser, libError } from "../../helper";
+import { isBrowser, libError } from "@/helper";
 
 export interface FileCheckerRule {
   len?: number;

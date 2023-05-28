@@ -1,4 +1,4 @@
-import { eventBusBuilder } from "../index";
+import { eventBusBuilder } from "..";
 
 test("test", () => {
   const bus = eventBusBuilder();
