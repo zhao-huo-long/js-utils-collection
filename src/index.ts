@@ -14,4 +14,4 @@ export * from "./lib/tree-data";
 
 export * from "./helper";
 
-export * from "./lib/rich-editor";
+export * from "./lib/load-script";
