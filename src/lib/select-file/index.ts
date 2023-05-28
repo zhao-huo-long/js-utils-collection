@@ -17,7 +17,7 @@ export function filesChecker(files: File[] = [], rule: FileCheckerRule) {
   const {
     len = Number.MAX_SAFE_INTEGER,
     maxSize = Number.MAX_SAFE_INTEGER,
-    minSize = Number.MAX_SAFE_INTEGER,
+    minSize = 0,
   } = rule;
 
   let error: [boolean, string] = [false, ``];
@@ -26,10 +26,17 @@ export function filesChecker(files: File[] = [], rule: FileCheckerRule) {
     return [true, `file more than ${len}`];
   }
   for (const file of files) {
-    if (file.size > maxSize || file.size < minSize) {
+    if (file.size > maxSize) {
       error = [
         true,
-        `${file.name} file size is more than ${maxSize} or less than ${minSize}`,
+        `[${file.name}] size is more than ${maxSize}`,
+      ];
+      break;
+    }
+    if (file.size < minSize) {
+      error = [
+        true,
+        `[${file.name}] size is less than ${minSize}`,
       ];
       break;
     }
@@ -69,12 +76,13 @@ export function selectFile(
   input.multiple = rule?.multiple || false;
   input.type = "file";
   return new Promise((res, rej) => {
-    input.onselect = function () {
+    input.onchange = function () {
+      console.log('1111', input.files)
       if (input.files?.[Symbol.iterator]) {
         const files = [...input.files];
         const [error, errorMsg] = filesChecker(files, rule || {});
         if (error) {
-          rej(errorMsg);
+          rej(new Error(errorMsg as string));
         } else {
           res(files);
         }
