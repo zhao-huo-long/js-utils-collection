@@ -18,7 +18,7 @@ export function loadScript(scriptUrl: string): Promise<unknown> {
       script.src = scriptUrl
       document.body.appendChild(script)
     })
-  };
+  }
   throw new Error(libError('loadScript only use in browser'))
 }
 
