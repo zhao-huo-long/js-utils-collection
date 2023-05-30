@@ -27,9 +27,11 @@ export function loadScript(scriptUrl: string): Promise<unknown> {
  * @param scriptUrl
  */
 export function loadScripts(scriptUrl: string[] | string) {
+  let scriptUrls: string[] = [];
   if (Array.isArray(scriptUrl)) {
-    return Promise.allSettled(scriptUrl.map(url => loadScript(url)))
-  } else {
-    return loadScript(scriptUrl)
+    scriptUrls = scriptUrl
+  } else if (typeof scriptUrl == 'string' && scriptUrl.trim().length) {
+    scriptUrls = [scriptUrl]
   }
+  return Promise.allSettled(scriptUrls.map(url => loadScript(url)))
 }
