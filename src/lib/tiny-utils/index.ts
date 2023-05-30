@@ -167,6 +167,23 @@ export class StringBox extends String {
   }
 }
 
-export function toStringBox(v: unknown){
+export function toStringBox(v: unknown) {
   return new StringBox(v)
+}
+
+export function fileToURL(file: File) {
+  if (file instanceof File) {
+    return URL.createObjectURL(file)
+  }
+  return ''
+}
+
+export function createFileObject(url: string) {
+  if (typeof url === 'string') {
+    return window.fetch(url, {
+      mode: 'cors',
+      cache: 'no-cache'
+    })
+  }
+  return Promise.reject(new Error(`url must be a string value`))
 }
