@@ -55,6 +55,8 @@ bus.fire("count", "2023");
 | `off`  | `(eventName: string, callback: function) => void ` | 取消监听事件                    |
 | `once` | `(eventName: string, callback: function) => void ` | 监听事件,触发一次后自动取消监听 |
 
+---
+
 #### `Storage`
 
 扩展原 Web Storage 的 `setItem` `getItem` 接口, 在 ts 中使用，能传入类型变量, 以此获得的 key,value 类型提示。
@@ -93,6 +95,8 @@ wait(4000).then(() => {
 | ------- | -------- | ----------------- |
 | `delay` | `number` | 等待时间, 默认 1s |
 
+---
+
 #### `fakeRequest`
 
 模拟 ajax 异步返回值
@@ -112,6 +116,8 @@ fakeRequest({ msg: "hello world." }, 4000).then((data) => {
 | `data`  | `any`    | 等待一段时间后被 resolve 的值 |
 | `delay` | `number` | 等待时间, 默认 1s             |
 
+---
+
 #### `interval`
 
 用 `setTimeout` 模拟 `setInterval` 功能
@@ -119,6 +125,8 @@ fakeRequest({ msg: "hello world." }, 4000).then((data) => {
 ```ts
 import { interval } from "js-utils-collection";
 ```
+
+---
 
 #### download
 
@@ -148,6 +156,8 @@ function download(
   options: TOption & RequestInit
 );
 ```
+
+---
 
 #### `StringBox`
 
