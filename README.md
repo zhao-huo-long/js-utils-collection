@@ -57,7 +57,7 @@ bus.fire("count", "2023");
 
 #### `Storage`
 
-扩展原 Web Storage 的` setItem``getItem `接口, 在 ts 中使用，能传入类型变量, 以此获得的 key,value 类型提示。
+扩展原 Web Storage 的 `setItem` `getItem` 接口, 在 ts 中使用，能传入类型变量, 以此获得的 key,value 类型提示。
 
 ```ts
 import { storageBuilder } from "js-utils-collection";
@@ -84,7 +84,6 @@ storage.getItem("id");
 
 ```ts
 import { wait } from "js-utils-collection";
-
 wait(4000).then(() => {
   // 4s后执行...
 });
@@ -121,6 +120,35 @@ fakeRequest({ msg: "hello world." }, 4000).then((data) => {
 import { interval } from "js-utils-collection";
 ```
 
+#### download
+
+下载文件，支持获取下载进度
+
+```ts
+import { download } from "js-utils-collection";
+
+download(url, filename, options);
+// 下载文件
+```
+
+```ts
+export interface TOption {
+  onProgress: (msg: {
+    all: number;
+    done: number;
+    complete: boolean;
+    fileName: string;
+    url: string;
+  }) => void;
+}
+
+function download(
+  url: string,
+  filename: string,
+  options: TOption & RequestInit
+);
+```
+
 #### `StringBox`
 
 用来实现文字输入效果
@@ -151,35 +179,6 @@ declare class StringBox extends String {
     optionOuter?: TPipelineOption
   ) => Promise<void>;
 }
-```
-
-#### download
-
-下载文件，支持获取下载进度
-
-```ts
-import { download } from "js-utils-collection";
-
-download(url, filename, options);
-// 下载文件
-```
-
-```ts
-export interface TOption {
-  onProgress: (msg: {
-    all: number;
-    done: number;
-    complete: boolean;
-    fileName: string;
-    url: string;
-  }) => void;
-}
-
-function download(
-  url: string,
-  filename: string,
-  options: TOption & RequestInit
-);
 ```
 
 ### 环境常量
