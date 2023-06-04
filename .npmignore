@@ -16,3 +16,4 @@ coverage
 .eslintignore
 package-lock.json
 scripts
+demo

@@ -136,9 +136,9 @@ new StringBox("abcd").pipelineChar((str, next) => {
 });
 
 // 每200ms打印一次
-// a ture
-// ab ture
-// abc ture
+// a true
+// ab true
+// abc true
 // abcd false
 ```
 
@@ -154,6 +154,35 @@ declare class StringBox extends String {
     optionOuter?: TPipelineOption
   ) => Promise<void>;
 }
+```
+
+#### download
+
+下载文件，支持获取下载进度
+
+```ts
+import { download } from "js-utils-collection";
+
+download(url, filename, options);
+// 下载文件
+```
+
+```ts
+export interface TOption {
+  onProgress: (msg: {
+    all: number;
+    done: number;
+    complete: boolean;
+    fileName: string;
+    url: string;
+  }) => void;
+}
+
+function download(
+  url: string,
+  filename: string,
+  options: TOption & RequestInit
+);
 ```
 
 ### 环境常量

@@ -171,6 +171,15 @@ export function toStringBox(v: unknown) {
   return new StringBox(v)
 }
 
+/**
+ *
+ * @param file 文件
+ * @returns
+ * @remark
+ * ```
+ *  需要 URL.revokeObjectURL
+ * ```
+ */
 export function fileToURL(file: File) {
   if (file instanceof File) {
     return URL.createObjectURL(file)
@@ -178,12 +187,12 @@ export function fileToURL(file: File) {
   return ''
 }
 
-export function createFileObject(url: string) {
-  if (typeof url === 'string') {
-    return window.fetch(url, {
-      mode: 'cors',
-      cache: 'no-cache'
-    })
-  }
-  return Promise.reject(new Error(`url must be a string value`))
+/**
+ *
+ * @param value
+ * @param space
+ * @returns
+ */
+export function stringify(value: unknown, space = 2) {
+  return JSON.stringify(value, null, space)
 }

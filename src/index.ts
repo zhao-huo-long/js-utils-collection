@@ -15,3 +15,5 @@ export * from "./lib/tree-data";
 export * from "./helper";
 
 export * from "./lib/load-script";
+
+export * from "./lib/download";

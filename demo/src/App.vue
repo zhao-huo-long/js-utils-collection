@@ -1,13 +1,13 @@
 <script setup>
 import FilePick from './examples/file-pick.vue'
-import FileCreate from './examples/file-create.vue'
+import FileDown from './examples/file-download.vue'
 </script>
 
 <template>
   <FilePick />
-  <FileCreate />
+  <hr>
+  <FileDown />
 </template>
-
 <style scoped>
 
 </style>
