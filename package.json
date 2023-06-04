@@ -33,9 +33,11 @@
     "url": "git+https://github.com/zhao-huo-long/js-utils-collection.git"
   },
   "keywords": [
-    "js-utils-collection"
+    "js-utils-collection",
+    "工具库",
+    "常用工具"
   ],
-  "author": "",
+  "author": "zhao-huo-long <lijiuyi1995@outlook.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/zhao-huo-long/js-utils-collection/issues"
@@ -61,7 +63,6 @@
     "prettier": "2.8.4",
     "rimraf": "^4.3.1",
     "rollup": "^3.18.0",
-    "tinymce": "^6.4.2",
     "ts-jest": "^29.1.0",
     "typescript": "^4.9.5"
   }
