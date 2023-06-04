@@ -29,20 +29,23 @@ pnpm install js-utils-collection
 事件总线类, 在 ts 中使用，能传入类型变量, 以此获得的事件名、回调参数类型提示。
 
 ```ts
-import { EventBus } from "js-utils-collection";
+import { newEventBus } from "js-utils-collection";
 
 interface EventMap {
   count: number;
 }
 
-const bus = new EventBus<EventMap>();
+const bus = newEventBus<EventMap>();
 
 bus.on("count", (value) => {
-  // typescript will known `value` is number or undefined
+  // 在 typescript 项目中 value 能被提示为 number 类型
 });
 
 bus.fire("count", 2023);
-// if your code is '2023' string, ts will throw a type error
+// 在 typescript 项目中值能被提示为 number 类型
+
+bus.fire("count", "2023");
+// 在 typescript 项目会抛出类型错误
 ```
 
 | 方法   | 类型                                               | 描述                            |
@@ -52,32 +55,26 @@ bus.fire("count", 2023);
 | `off`  | `(eventName: string, callback: function) => void ` | 取消监听事件                    |
 | `once` | `(eventName: string, callback: function) => void ` | 监听事件,触发一次后自动取消监听 |
 
-> 工厂函数
-> `import { newEventBus } from "js-utils-collection";`
-
 #### `Storage`
 
 扩展原 Web Storage 的` setItem``getItem `接口, 在 ts 中使用，能传入类型变量, 以此获得的 key,value 类型提示。
 
 ```ts
-import { Storage } from "js-utils-collection";
+import { storageBuilder } from "js-utils-collection";
 
 interface KeyValType {
   id: number;
   username: string;
 }
 
-const storage = new Storage<KeyValType>("sessionStorage");
+const storage = storageBuilder<KeyValType>("sessionStorage");
 
 storage.setItem("id", 2);
-// if you write storage.setItem('id', '2'), typescript will throw type error
+// 如果传入id的类型不对，会抛出类型错误
 
 storage.getItem("id");
-// if you write storage.getItem('ids'), typescript will throw type error
+// 能获取到id的值为 null | number
 ```
-
-> 工厂函数
-> `import { storageBuilder } from "js-utils-collection";`
 
 ---
 
