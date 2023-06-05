@@ -15,7 +15,7 @@
     "lint-fix": "eslint  --fix src/*",
     "prettier": "prettier --write src/*",
     "prepare": "husky install",
-    "postinstall": "node scripts/postinstall.js"
+    "postbuild": "node scripts/postbuild"
   },
   "lint-staged": {
     "src/*.ts": [

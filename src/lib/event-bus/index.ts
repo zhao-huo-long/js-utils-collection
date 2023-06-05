@@ -1,5 +1,4 @@
 import { libWarn } from "@/helper";
-import type { AnyFn } from "@/types";
 
 type TransformMap<T extends Record<string, unknown>> = {
   [key in keyof T]?: (arg?: T[key]) => unknown;

@@ -180,11 +180,11 @@ export function toStringBox(v: unknown) {
  *  需要 URL.revokeObjectURL
  * ```
  */
-export function fileToURL(file: File) {
-  if (file instanceof File) {
+export function fileToURL(file: File | Blob) {
+  if (file instanceof Blob) {
     return URL.createObjectURL(file)
   }
-  return ''
+  throw new Error('param must a File or Blob type value')
 }
 
 /**
@@ -195,4 +195,29 @@ export function fileToURL(file: File) {
  */
 export function stringify(value: unknown, space = 2) {
   return JSON.stringify(value, null, space)
+}
+
+
+/**
+ * downloadFile
+ * @param filename s
+ * @param content
+ */
+export function downloadFile(filename: string, content: Blob | Uint8Array){
+  let url = '';
+  if(content instanceof Blob){
+    url = fileToURL(content)
+  }
+  if(content instanceof Uint8Array){
+    const file = new File([content], filename)
+    url = fileToURL(file)
+  }
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename
+  a.click()
+  setTimeout(() => {
+    URL.revokeObjectURL(url)
+    a.remove()
+  }, 0)
 }

@@ -1,4 +1,4 @@
-import { fileToURL } from "@/lib/tiny-utils";
+import { downloadFile } from "@/lib/tiny-utils";
 
 export interface TOption {
   onProgress: (msg: {
@@ -67,15 +67,6 @@ export function getFile(url: string, fileName: string, option: TOption & Request
  */
 export function download(url: string, fileName: string, option: TOption & RequestInit) {
   return getFile(url, fileName, option).then(function (blob) {
-    const file = new File([blob], fileName)
-    const fileURL = fileToURL(file)
-    const aTag = document.createElement('a')
-    aTag.download = fileName
-    aTag.href = fileURL
-    aTag.click()
-    setTimeout(() => {
-      URL.revokeObjectURL(fileURL)
-      aTag.remove()
-    }, 0)
+    downloadFile(fileName, blob)
   })
 }
