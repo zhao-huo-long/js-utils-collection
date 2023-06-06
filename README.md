@@ -29,13 +29,13 @@ pnpm install js-utils-collection
 事件总线类, 在 ts 中使用，能传入类型变量, 以此获得的事件名、回调参数类型提示。
 
 ```ts
-import { newEventBus } from "js-utils-collection";
+import { eventBusBuilder } from "js-utils-collection";
 
 interface EventMap {
   count: number;
 }
 
-const bus = newEventBus<EventMap>();
+const bus = eventBusBuilder<EventMap>();
 
 bus.on("count", (value) => {
   // 在 typescript 项目中 value 能被提示为 number 类型
