@@ -14,6 +14,6 @@ export * from "./lib/tree-data";
 
 export * from "./helper";
 
-export * from "./lib/load-script";
+export * from "./lib/load-file";
 
 export * from "./lib/download";

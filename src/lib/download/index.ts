@@ -1,7 +1,7 @@
 import { downloadFile } from "@/lib/tiny-utils";
 
 export interface TOption {
-  onProgress: (msg: {
+  onProgress?: (msg: {
     all: number,
     done: number,
     complete: boolean,
@@ -66,7 +66,8 @@ export function getFile(url: string, fileName: string, option: TOption & Request
  * @returns
  */
 export function download(url: string, fileName: string, option: TOption & RequestInit) {
-  return getFile(url, fileName, option).then(function (blob) {
+  return getFile(url, fileName, option)
+  .then(function (blob) {
     downloadFile(fileName, blob)
   })
 }

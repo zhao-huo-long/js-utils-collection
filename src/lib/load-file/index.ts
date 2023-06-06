@@ -1,5 +1,6 @@
 import { libError, isBrowser } from "@/helper";
 
+
 /**
  * loadScript
  * @param scriptUrl
@@ -22,6 +23,7 @@ export function loadScript(scriptUrl: string): Promise<unknown> {
   throw new Error(libError('loadScript only use in browser'))
 }
 
+
 /**
  * loadScripts
  * @param scriptUrl
@@ -34,4 +36,29 @@ export function loadScripts(scriptUrl: string[] | string) {
     scriptUrls = [scriptUrl]
   }
   return Promise.allSettled(scriptUrls.map(url => loadScript(url)))
+}
+
+
+/**
+ * loadCss
+ * @param cssUrl
+ * @returns
+ */
+export function loadCss(cssUrl: string) {
+  if (isBrowser) {
+    return new Promise<unknown>((resolve, reject) => {
+      const link = document.createElement('link');
+      link.type = 'text/css'
+      link.onload = function () {
+        resolve(true)
+      }
+      link.onerror = function (error) {
+        reject(error)
+      }
+      link.rel = 'stylesheet'
+      link.href = cssUrl
+      document.body.appendChild(link)
+    })
+  }
+  throw new Error(libError('loadCss only use in browser'))
 }
