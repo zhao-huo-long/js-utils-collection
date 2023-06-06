@@ -79,3 +79,19 @@ export function storageBuilder<T = Record<string, unknown>>(
 ) {
   return new Storage<T>(type);
 }
+
+/**
+ * localStorageBuilder
+ * @returns
+ */
+export function localStorageBuilder<T = Record<string, unknown>>() {
+  return storageBuilder<T>("localStorage")
+}
+
+/**
+ * sessionStorageBuilder
+ * @returns
+ */
+export function sessionStorageBuilder<T = Record<string, unknown>>() {
+  return storageBuilder<T>("sessionStorage")
+}

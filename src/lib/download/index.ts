@@ -11,7 +11,7 @@ export interface TOption {
 }
 
 /**
- *  获取文件
+ * 获取文件
  * @param url
  * @param fileName
  * @param option
@@ -65,7 +65,11 @@ export function getFile(url: string, fileName: string, option: TOption & Request
  * @param option
  * @returns
  */
-export function download(url: string, fileName: string, option: TOption & RequestInit) {
+export function download(
+  url: string,
+  fileName: string,
+  option: TOption & RequestInit
+) {
   return getFile(url, fileName, option)
     .then(function (blob) {
       downloadFile(fileName, blob)
