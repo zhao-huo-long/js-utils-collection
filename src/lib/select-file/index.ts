@@ -77,7 +77,6 @@ export function selectFile(
   input.type = "file";
   return new Promise((res, rej) => {
     input.onchange = function () {
-      console.log('1111', input.files)
       if (input.files?.[Symbol.iterator]) {
         const files = [...input.files];
         const [error, errorMsg] = filesChecker(files, rule || {});

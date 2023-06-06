@@ -8,6 +8,8 @@ type TransformMapArr<T extends Record<string, unknown>> = {
   [key in keyof T]?: ((arg?: T[key]) => unknown)[];
 };
 
+export const __inspectHandlerStore__ =  Symbol(`__inspectHandlerStore__`)
+
 /**
  * 事件总线 - EventBus
  * @description 事件总线类, 对事件名和事件回调参数类型提示比较友好
@@ -119,7 +121,7 @@ export class EventBus<
     }
   };
 
-  __inspectHandlerStore__ = <EventName extends keyof TransformMap<T>>(
+  [__inspectHandlerStore__] = <EventName extends keyof TransformMap<T>>(
     name?: EventName
   ) => {
     if (typeof name === "string") {

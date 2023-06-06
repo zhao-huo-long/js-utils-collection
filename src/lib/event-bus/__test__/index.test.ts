@@ -1,4 +1,4 @@
-import { eventBusBuilder } from "..";
+import { eventBusBuilder, __inspectHandlerStore__ } from "..";
 
 test("test", () => {
   const bus = eventBusBuilder();
@@ -10,13 +10,13 @@ test("test", () => {
   };
   bus.on("test", callbackTest);
   bus.fire("test", { name: "jerry.lee", email: "lijiuyi1995@outlook.com" });
-  const whiteFn = () => {};
+  const whiteFn = () => { };
   bus.on("test", whiteFn);
 
-  expect(bus.__inspectHandlerStore__("test")).toEqual([callbackTest, whiteFn]);
+  expect(bus[__inspectHandlerStore__]("test")).toEqual([callbackTest, whiteFn]);
 
   bus.off("test", callbackTest);
-  expect(bus.__inspectHandlerStore__("test")).toEqual([whiteFn]);
+  expect(bus[__inspectHandlerStore__]("test")).toEqual([whiteFn]);
 
   bus.once("test-once", (value) => {
     expect(value).toEqual({
@@ -29,16 +29,16 @@ test("test", () => {
     email: "lijiuyi1995@outlook.com",
   });
 
-  expect(bus.__inspectHandlerStore__("test-once")).toEqual([]);
+  expect(bus[__inspectHandlerStore__]("test-once")).toEqual([]);
 
   bus.on("test-input-error", "" as any);
-  expect(bus.__inspectHandlerStore__("test-input-error")).toEqual([]);
+  expect(bus[__inspectHandlerStore__]("test-input-error")).toEqual([]);
 
   bus.fire("test-no-handler", "any");
   bus.off("test-no-handler", "any" as any);
-  expect(bus.__inspectHandlerStore__("test-no-handler")).toEqual([]);
+  expect(bus[__inspectHandlerStore__]("test-no-handler")).toEqual([]);
 
-  expect(bus.__inspectHandlerStore__()).toEqual({
+  expect(bus[__inspectHandlerStore__]()).toEqual({
     test: [whiteFn],
     "test-once": [],
   });

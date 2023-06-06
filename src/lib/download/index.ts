@@ -10,7 +10,6 @@ export interface TOption {
   }) => void,
 }
 
-
 /**
  *  获取文件
  * @param url
@@ -26,7 +25,8 @@ export function getFile(url: string, fileName: string, option: TOption & Request
       cache: 'no-cache',
       ...fetchInit
     }).then(response => {
-      const bodySize = parseInt(response.headers.get('Content-Length'.toLocaleLowerCase()) || '0');
+      const sizeStr = response.headers.get('Content-Length'.toLocaleLowerCase())
+      const bodySize = parseInt(sizeStr || '0');
       const res = response.clone();
       const reader = res?.body?.getReader?.();
       let i = 0;
@@ -67,7 +67,7 @@ export function getFile(url: string, fileName: string, option: TOption & Request
  */
 export function download(url: string, fileName: string, option: TOption & RequestInit) {
   return getFile(url, fileName, option)
-  .then(function (blob) {
-    downloadFile(fileName, blob)
-  })
+    .then(function (blob) {
+      downloadFile(fileName, blob)
+    })
 }
