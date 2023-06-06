@@ -1,9 +1,3 @@
-/**
- * @author jerry.lee
- * @email lijiuyi1995@outlook.com
- * @create date 2023-04-08 17:54:42
- * @modify date 2023-04-08 17:54:42
- */
 import { PACKAGE_NAME } from "../constants";
 
 /**
