@@ -11,7 +11,7 @@ export function wait(delay = 1000) {
 }
 
 /**
- * reqFaker - 模拟ajax的等待,返回效果
+ * fakeRequest - 模拟ajax的等待
  * @param body
  * @param delay
  * @returns

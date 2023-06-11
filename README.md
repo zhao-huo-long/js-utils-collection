@@ -83,28 +83,19 @@ storage.getItem("id");
 
 ---
 
-#### `wait`
-
-返回一个等待一段时间的 promise 实例
-
+#### `fakeRequest`
+模拟ajax的等待
 ```ts
-import { wait } from "js-utils-collection";
-wait(4000).then(() => {
-  // 4s后执行...
+import { fakeRequest } from "js-utils-collection";
+fakeRequest('hello world',4000)
+.then((str) => {
+  console.log(str) // 4s后打印hello world...
 });
 ```
-
-| params  | 类型     | 描述              |
-| ------- | -------- | ----------------- |
-| `delay` | `number` | 等待时间, 默认 1s |
-
----
-
-| params  | 类型     | 描述                          |
-| ------- | -------- | ----------------------------- |
-| `data`  | `any`    | 等待一段时间后被 resolve 的值 |
-| `delay` | `number` | 等待时间, 默认 1s             |
-
+api
+```ts
+const result: Promise<T> =  fakeRequest<T>(data: T, delay: number);
+```
 ---
 
 #### `interval`
