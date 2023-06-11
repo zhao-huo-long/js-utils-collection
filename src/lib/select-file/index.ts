@@ -15,7 +15,7 @@ export interface FileCheckerRule {
  */
 export function filesChecker(files: File[] = [], rule: FileCheckerRule) {
   const {
-    len = Number.MAX_SAFE_INTEGER,
+    len = 1,
     maxSize = Number.MAX_SAFE_INTEGER,
     minSize = 0,
   } = rule;
@@ -61,19 +61,19 @@ export function filesChecker(files: File[] = [], rule: FileCheckerRule) {
  * })
  * ```
  * @param accept
- * @param multiple
  * @returns `Promise<File[]>`
  */
 export function selectFile(
   accept = "*",
-  rule?: FileCheckerRule & { multiple?: boolean }
+  rule: FileCheckerRule = {}
 ) {
   if (!isBrowser) {
     throw new Error(libError("function `selectFile` only can run in browser"));
   }
   const input = document.createElement("input");
+  rule.len = rule?.len || 1
   input.accept = accept;
-  input.multiple = rule?.multiple || false;
+  input.multiple = rule.len > 1;
   input.type = "file";
   return new Promise((res, rej) => {
     input.onchange = function () {
@@ -91,5 +91,6 @@ export function selectFile(
       return;
     };
     input.click();
-  }).finally(() => input.remove());
+    setTimeout(() => input.remove(), 500)
+  })
 }

@@ -131,46 +131,6 @@ export function treesMap(
 }
 
 
-export interface TPipelineOption {
-  speed?: number
-  signal?: AbortSignal
-  mode?: "append" | "single"
-}
-
-export class StringBox extends String {
-  public pipelineChar = (
-    cb: (str: string, next: boolean) => void,
-    optionOuter: TPipelineOption = {}
-  ) => {
-    const defaultOptions = { speed: 200, mode: 'append' }
-    const option = Object.assign({}, defaultOptions, optionOuter)
-    let index = 0
-    return new Promise<void>((res, rej) => {
-      const stop = interval(() => {
-        const next = index + 1 < this.length
-        if (option.mode === 'single') {
-          cb(this.at(index++) as string, next,)
-        }
-        if (option.mode === 'append') {
-          cb(this.slice(0, (index++) + 1), next)
-        }
-        if (!next) {
-          stop()
-          res()
-        }
-      }, option.speed)
-      option.signal?.addEventListener?.('abort', () => {
-        stop()
-        rej(new Error('you emit the abort event'))
-      })
-    })
-  }
-}
-
-export function toStringBox(v: unknown) {
-  return new StringBox(v)
-}
-
 /**
  *
  * @param file 文件
@@ -200,7 +160,7 @@ export function stringify(value: unknown, space = 2) {
 
 /**
  * downloadFile
- * @param filename s
+ * @param filename
  * @param content
  */
 export function downloadFile(filename: string, content: Blob | Uint8Array){

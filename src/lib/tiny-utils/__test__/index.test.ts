@@ -1,4 +1,4 @@
-import { fakeRequest, wait, toStringBox } from "..";
+import { fakeRequest, wait } from "..";
 
 jest.spyOn(global, "setTimeout");
 
@@ -27,9 +27,3 @@ test(`test fn fakeRequest`, async () => {
     expect(setTimeout).toHaveBeenCalledTimes(1);
   });
 });
-
-test(`test fn toStringBox`, async () => {
-  const fn = jest.fn(() => { })
-  await toStringBox(`hello world`).pipelineChar(fn, { speed: 1, })
-  expect(fn).toHaveBeenCalledTimes(11)
-}, 500);

@@ -57,19 +57,22 @@ bus.fire("count", "2023");
 
 ---
 
-#### `Storage`
+#### `localStorageBuilder & sessionStorageBuilder`
 
 扩展原 Web Storage 的 `setItem` `getItem` 接口, 在 ts 中使用，能传入类型变量, 以此获得的 key,value 类型提示。
 
 ```ts
-import { storageBuilder } from "js-utils-collection";
+import { localStorageBuilder } from "js-utils-collection";
+// import { sessionStorageBuilder } from "js-utils-collection";
+
 
 interface KeyValType {
   id: number;
   username: string;
 }
 
-const storage = storageBuilder<KeyValType>("sessionStorage");
+const storage = localStorageBuilder<KeyValType>();
+// const storage = sessionStorageBuilder<KeyValType>();
 
 storage.setItem("id", 2);
 // 如果传入id的类型不对，会抛出类型错误
@@ -97,20 +100,6 @@ wait(4000).then(() => {
 
 ---
 
-#### `fakeRequest`
-
-模拟 ajax 异步返回值
-
-```ts
-import { fakeRequest } from "js-utils-collection";
-
-fakeRequest({ msg: "hello world." }, 4000).then((data) => {
-  // 4s后执行...
-  console.log(data);
-  // log: { msg: “hello world." }
-});
-```
-
 | params  | 类型     | 描述                          |
 | ------- | -------- | ----------------------------- |
 | `data`  | `any`    | 等待一段时间后被 resolve 的值 |
@@ -119,13 +108,23 @@ fakeRequest({ msg: "hello world." }, 4000).then((data) => {
 ---
 
 #### `interval`
-
-用 `setTimeout` 模拟 `setInterval` 功能
-
+用 `setTimeout` 模拟 `setInterval`
 ```ts
 import { interval } from "js-utils-collection";
-```
 
+const clearFn = interval(function(){
+  console.log(`hello world`)
+}, 1000)
+
+setTimeout(() => {
+  clearFn() // 停止重复执行
+}, 4000)
+```
+api
+```ts
+const clearFn: () => void = interval(cb: () => any, time: number)
+
+```
 ---
 
 #### download
@@ -136,60 +135,44 @@ import { interval } from "js-utils-collection";
 import { download } from "js-utils-collection";
 
 download(url, filename, options);
-// 下载文件
 ```
 
-```ts
-export interface TOption {
-  onProgress: (msg: {
-    all: number;
-    done: number;
-    complete: boolean;
-    fileName: string;
-    url: string;
-  }) => void;
-}
-
-function download(
-  url: string,
-  filename: string,
-  options: TOption & RequestInit
-);
+api
+```typescript
+const result: Promise<void> = download(url: string, filename: string, options: TOption & RequestInit)
 ```
+
+`TOption`
+| params  | 类型     | 描述              |
+| ------- | -------- | ----------------- |
+| `onProgress` | `(msg: { all: number; done: number; complete: boolean; fileName: string; url: string; }) => void; ` | 下载进度回调 |
 
 ---
 
-#### `StringBox`
+#### 选择文件
 
-用来实现文字输入效果
-
-```ts
-import { StringBox } from "js-utils-collection";
-
-new StringBox("abcd").pipelineChar((str, next) => {
-  console.log(str, next);
-});
-
-// 每200ms打印一次
-// a true
-// ab true
-// abc true
-// abcd false
-```
+调用函数动态唤起文件选择对话框
 
 ```ts
-interface TPipelineOption {
-  speed?: number;
-  signal?: AbortSignal;
-  mode?: "append" | "single";
-}
-declare class StringBox extends String {
-  pipelineChar: (
-    cb: (str: string, next: boolean) => void,
-    optionOuter?: TPipelineOption
-  ) => Promise<void>;
-}
+import { selectFile } from "js-utils-collection";
+
+const result = selectFile("image/*", { len: 8, maxSize: 1024, minSize: 10, });
 ```
+
+api
+```typescript
+const result: Promise<Files[]> = selectFile(accept = string, rule?: FileCheckerRule);
+```
+
+`FileCheckerRule`
+| params  | 类型     | 描述              |
+| ------- | -------- | ----------------- |
+| `len` | `number` | 最多选择文件数量，默认 1 |
+| `maxSize` | `number` | 允许最大文件的size，默认 Number.MAX_SAFE_INTEGER |
+| `maxSize` | `number` | 允许最小文件的size, 默认 0 |
+
+---
+
 
 ### 环境常量
 
@@ -214,5 +197,6 @@ import { isBrowser } from "js-utils-collection";
 | ------- | --------- | ---------------------------- |
 | `true`  | `boolean` | 当前 js 运行在浏览器环境     |
 | `false` | `boolean` | 当前 js 没有运行在浏览器环境 |
-
 ---
+
+
