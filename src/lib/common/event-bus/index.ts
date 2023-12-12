@@ -8,7 +8,7 @@ type TransformMapArr<T extends Record<string, unknown>> = {
   [key in keyof T]?: ((arg?: T[key]) => unknown)[];
 };
 
-export const __inspectHandlerStore__ =  Symbol(`__inspectHandlerStore__`)
+export const __inspectHandlerStore__ = Symbol(`__inspectHandlerStore__`)
 
 /**
  * 事件总线 - EventBus
@@ -93,7 +93,7 @@ export class EventBus<
     if (!handlerList.length) {
       console.warn(
         libWarn(
-          `you fire event '${String(name)}', but it don't have any handler`
+          `fire event '${String(name)}', but it don't have any handler`
         )
       );
     }
@@ -117,7 +117,7 @@ export class EventBus<
         this.off(name, wrapperHandler);
       };
       this.onceHandlerMap.set(handler, wrapperHandler);
-      this.on(name, wrapperHandler);
+      return this.on(name, wrapperHandler);
     }
   };
 

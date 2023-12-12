@@ -1,4 +1,4 @@
-import { isUnsignedInt } from "@/helper";
+import { isUnsignedInt } from "@/index";
 
 export class FileToChunksCls {
   protected readonly innerFile: File | Blob | null = null;

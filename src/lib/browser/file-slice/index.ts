@@ -1,6 +1,6 @@
 import { FileToChunksCls } from "./file-chunks";
-import { PromiseContainer } from "@/lib/promise-container";
-import type { Option } from "../promise-container";
+import { PromiseContainer } from "@/lib/common";
+import type { Option } from "@/lib/common";
 
 export * from "./file-chunks";
 
